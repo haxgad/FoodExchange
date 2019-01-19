@@ -1,29 +1,53 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./transac.css";
 
 const firebase = require('firebase')
+
 class SellerTransactions extends React.Component {
   state = {
-    coupons: []
+    coupons: [],
+    keys: []
   }
 
   componentDidMount = () => {
     firebase.database().ref('/Coupon').on('value', snapshot => {
       var newCoupons = []
-    
+      var newKeys = []
+      newKeys = Object.keys(snapshot.val())
+      var i = 0
+
       snapshot.forEach((coupon) => {
-        newCoupons.push(coupon.val())
+        newCoupons.push([coupon.val(), i])
+        i++
       })
-      this.setState({ coupons: newCoupons })
+
+      console.log(newCoupons)
+      console.log(newKeys)
+  
+      this.setState({ coupons: newCoupons, keys : newKeys })
+
     });
   }
+
+handleRemove = (k) => {
+    const toCancel = firebase.database().ref(`/Coupon/${k}`);
+    toCancel.remove();
+}
+
+handleUpdateStatus = (k) => {
+  var updates = {};
+  updates['/soldStatus'] = true;
+  const toUpdate = firebase.database().ref(`/Coupon/${k}`);
+  toUpdate.update(updates);
+}
   
   render() {
     return (
       <div>
         <div className="jumbotron">
           <h1 className="display-4">Status of Coupon Sale</h1>
-          <p className="lead">Check/Update status of coupons being sold!</p>
+          <p className="lead">Check/Update status of meal coupons being sold!</p>
         </div>
 
         <table className="table">
@@ -39,17 +63,30 @@ class SellerTransactions extends React.Component {
           </thead>
           <tbody>
             { this.state.coupons.map((coupon) => {
-              return (
-                <tr>
-                  <td>{coupon.date}</td>
-                  <td>{coupon.time}</td>
-                  <td>{coupon.amount}</td>
-                  <td>{coupon.location}</td>
-                  <td>{coupon.mealType}</td>
-                  <td><button type="button" className="btn btn-primary btn-md">Confirm</button>
-                  <button type="button" className="btn btn-primary btn-md">Cancel</button></td>
-                </tr>
-              )
+              if(coupon[0].soldStatus == false){
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.handleUpdateStatus(this.state.keys[coupon[1]])}>Confirm</button>
+                    <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.handleRemove(this.state.keys[coupon[1]])}>Cancel</button></td>
+                  </tr>
+                )                 
+              } else {
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td>SOLD</td>
+                  </tr>
+                )
+              }
             }) }
           </tbody>
         </table>
@@ -57,11 +94,5 @@ class SellerTransactions extends React.Component {
     );
   }
 }
-
-/*const SellerTransactions= () => (
-  <div>
-    <h1>SellerTransactions</h1>
-  </div>
-);*/
 
 export default SellerTransactions;

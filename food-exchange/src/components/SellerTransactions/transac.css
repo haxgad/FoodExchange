@@ -1,0 +1,21 @@
+.cancelBtn{
+    background-color: #F76C6C;
+    margin-left: 5px;
+    color: white;
+}
+
+.cancelBtn:hover{
+    background-color:  rgb(228, 142, 142);
+    color: white;
+}
+
+.confirmBtn{
+    background-color: #3AAFA9;
+    color: white;
+    margin-right: 5px;
+}
+
+.confirmBtn:hover{
+    background-color:  rgb(116, 189, 179);
+    color: white;
+}
