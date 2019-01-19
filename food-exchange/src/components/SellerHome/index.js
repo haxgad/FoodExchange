@@ -5,8 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SellerHome= () => (
   <div>
-      <Nav />
-    <h2> this is seller home</h2>
+    <div className="jumbotron">
+      <h1 className="display-4">Seller's Home</h1>
+      <p className="lead">Manage your meal coupons here!</p>
+    </div>
+    <Nav />
     <Calendar />
   </div>
 );
