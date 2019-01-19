@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import BuyerHome from './components/BuyerHome'
 
 // ReactDOM.render(<Landing />, document.getElementById('root'));
-ReactDOM.render(<BuyerHome />, document.getElementById('root'))
+ReactDOM.render(<BuyerHome />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
