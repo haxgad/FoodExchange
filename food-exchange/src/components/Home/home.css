@@ -27,6 +27,10 @@ h2.float-text {
     padding: 5px;
 }
 
+.row {
+    margin-top: -50px;
+}
+
 .row::after {
     content: "";
     clear: both;
