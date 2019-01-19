@@ -32,7 +32,7 @@ class SellingForm extends React.Component {
         mealType: this.state.mealType,
         amount: this.state.amount,
         telegramHandle: "@CalvinTantio",
-        soldStatus: false
+        soldStatus: "false"
     }
 
     firebase.database().ref('/Coupon').push(newCoupon);
