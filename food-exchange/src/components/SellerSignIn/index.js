@@ -1,19 +1,21 @@
 import React from 'react';
 import './sellersignin.css'
+import { Redirect } from 'react-router-dom';
 
 class SellerSignIn extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    toHome: false,
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-
-    if(this.state.username == "CalvinTantio" && this.state.password == "FoodExchange") {
-      return <Redirect to='/homepage' />
+    alert(this.state.username)
+    this.setState({
+        toHome: true
+      });
     }
-  }
 
   handleInputChange = (event) => {
     const target = event.target;
@@ -26,7 +28,13 @@ class SellerSignIn extends React.Component {
 }
 
   render() {
+          
+    if (this.state.toHome === true) {
+      return <Redirect to='/sellerhome' />
+    }
+    
     return (
+
       <div>
         <section class="login-block">
         <div class="container">
@@ -42,7 +50,7 @@ class SellerSignIn extends React.Component {
                   <label for="exampleInputPassword1" class="text-uppercase">Password</label>
                   <input type="password" id="password" class="form-control" onChange={this.handleInputChange} value={this.state.password}></input>
                 </div>
-                <button type="button" class="btn btn-secondary btn-lg btn-block"><b>Sign In</b></button>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block"><b>Sign In</b></button>
               </form>
             </div>
             <div class="col-md-8 banner-sec">
