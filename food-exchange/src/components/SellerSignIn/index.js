@@ -14,7 +14,7 @@ class SellerSignIn extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if(this.state.username == "CalvinTantio" && this.state.password == "Food Exchange") {
+    if(this.state.username == "CalvinTantio" && this.state.password == "FoodExchange") {
       this.setState({
         proceed: true
       });
@@ -79,7 +79,7 @@ class SellerSignIn extends React.Component {
                     <img class="d-block img-fluid image-blur" src="http://cfile23.uf.tistory.com/image/236E0A4055102330075793" alt="First slide"></img>
                     <div class="carousel-caption d-none d-md-block">
                       <div class="banner-text">
-                        <h1><b>Food Exchange</b></h1>
+                        <h1><b>FoodExchange</b></h1>
                         <h4><b>Say NO to food coupons wastage!</b></h4>
                       </div>
                     </div>

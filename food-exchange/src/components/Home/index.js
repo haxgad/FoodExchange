@@ -10,7 +10,7 @@ const Home = () => (
       <p className="lead">Buy or sell your meal coupons at NUS foodXchange!</p>
     </div>
     <div class="text-center">
-          <Link to ="/sellerhome" style={{ textDecoration: 'none'}}><button type="button" class="btn seller">Sell</button></Link>
+          <Link to ="/sellersignin" style={{ textDecoration: 'none'}}><button type="button" class="btn seller">Sell</button></Link>
           <Link to ="/buyerhome" style={{ textDecoration: 'none'}}><button type="button" class="btn buyer">Buy</button></Link>
       </div>
   </div>
