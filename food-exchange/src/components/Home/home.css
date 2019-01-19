@@ -7,11 +7,45 @@
     background-color: white;
 }
 
+h1.display-4 {
+    text-align: center;
+}
+
+h2.lead {
+    text-align: center;
+}
+
+h2.float-text {
+    color: #3AAFA9;
+    margin-top: -180px;
+    text-align: center;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.logos {
+    margin-top: -50px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.down-a-bit {
+    margin-top: 25px;
+}
+
 .seller{
     background-color: #F76C6C;
     font-size: 50px;
     padding: 20px 110px 20px 110px;
-    margin: 20px;
+    margin: 70px 20px;
     color: white;
 }
 
@@ -25,10 +59,17 @@
     font-size: 50px;
     color: white;
     padding: 20px 110px 20px 110px;
-    margin: 20px;
+    margin: 70px 20px;
 }
 
 .buyer:hover{
     background-color:  rgb(116, 189, 179);
     color: white;
 }
+
+.center {
+    margin-top: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }

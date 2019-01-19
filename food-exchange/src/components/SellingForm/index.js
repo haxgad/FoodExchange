@@ -85,7 +85,7 @@ class SellingForm extends React.Component {
       <div>
         <div class="jumbotron">
             <h1 class="display-4">Sell Coupons!</h1>
-            <p>Fill in the following form to sell your coupons</p>
+            <p class="lead">Fill in the following form to sell your coupons</p>
         </div>
 
         <div class="box">

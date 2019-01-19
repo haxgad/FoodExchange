@@ -1,3 +1,10 @@
+.customHeaderDiv{
+    margin: 10px 60px;
+}
+
+.customHeaderDiv2{
+    margin: 10px 120px;
+}
 
 .day{
     font-size: 15px;
