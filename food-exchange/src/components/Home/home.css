@@ -41,7 +41,7 @@ h2.float-text {
     background-color: #F76C6C;
     font-size: 50px;
     padding: 20px 110px 20px 110px;
-    margin: 20px;
+    margin: 70px 20px;
     color: white;
 }
 
@@ -55,7 +55,7 @@ h2.float-text {
     font-size: 50px;
     color: white;
     padding: 20px 110px 20px 110px;
-    margin: 20px;
+    margin: 70px 20px;
 }
 
 .buyer:hover{
