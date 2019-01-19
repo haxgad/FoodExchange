@@ -1,8 +1,8 @@
 import React from 'react';
 
-const SellerHome = () => (
+const SellerHome= () => (
   <div>
-    <h1>SellerHome</h1>
+    <h2> this is seller home</h2>
   </div>
 );
 

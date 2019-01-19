@@ -1,5 +1,5 @@
-export const LANDING = '/';
+export const HOME = '/';
 export const BUYER_HOME = '/buyerhome';
 export const SELLER_HOME = '/sellerhome';
-export const SELLER_SIGNIN = '/sellersignin';
+export const SELLER_SIGN_IN = '/sellersignin';
 export const SELLER_TRANSACTIONS = '/sellertransactions';
