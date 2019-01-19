@@ -1,18 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Coupon = require('../../models/Coupon').default
-
 const firebase = require('firebase')
-const config = {
-  apiKey: "AIzaSyCwdK6thARXfiiiRTr2Xlu-DJC-YesbCQE",
-  authDomain: "food-exchange-a9870.firebaseapp.com",
-  databaseURL: "https://food-exchange-a9870.firebaseio.com",
-  projectId: "food-exchange-a9870",
-  storageBucket: "food-exchange-a9870.appspot.com",
-  messagingSenderId: "84559066060"
-};
-firebase.initializeApp(config);
 
 class BuyerHome extends React.Component {
   state = {
