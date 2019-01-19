@@ -1,3 +1,4 @@
+
 .welcome{
     font-size: 100px;
     font-style: italic;
@@ -6,13 +7,25 @@
 .seller{
     background-color: #F76C6C;
     font-size: 50px;
+    padding: 20px 110px 20px 110px;
+    margin: 20px;
     color: white;
-    padding: 10px 40px 10px 40px;
+}
+
+.seller:hover{
+    background-color:  rgb(228, 142, 142);
+    color: white;
 }
 
 .buyer{
-    background-color: #374785;
+    background-color: #3AAFA9;
     font-size: 50px;
     color: white;
-    padding: 10px 40px 10px 40px;
+    padding: 20px 110px 20px 110px;
+    margin: 20px;
+}
+
+.buyer:hover{
+    background-color:  rgb(116, 189, 179);
+    color: white;
 }
