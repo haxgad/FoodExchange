@@ -2,9 +2,27 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class BuyerHome extends React.Component {
+  state = {
+    coupons: [
+      {
+        date: 1,
+        time: 1.1,
+        amount: 1.2
+      },
+      {
+        date: 2,
+        time: 2.1,
+        amount: 2.2
+      },
+      {
+        date: 3,
+        time: 3.1,
+        amount: 3.2
+      }
+    ]
+  }
+  
   render() {
-    
-    
     return (
       <div>
         <div className="jumbotron">
@@ -24,24 +42,16 @@ class BuyerHome extends React.Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            { this.state.coupons.map((coupon) => {
+              return (
+                <tr>
+                  <th scope="row">1</th>
+                  <td>{coupon.date}</td>
+                  <td>{coupon.time}</td>
+                  <td>{coupon.time}</td>
+                </tr>
+              )
+            }) }
           </tbody>
         </table>
       </div>
