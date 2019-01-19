@@ -23,12 +23,21 @@ logger = logging.getLogger(__name__)
 
 DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT = range(6)
 
+#buyer information
 date = ""
 time = ""
 location = ""
 amount = ""
 meal = ""
 contact = ""
+
+#seller information
+sellerDate = ""
+sellerTime = ""
+sellerLocation = ""
+sellerAmount = ""
+sellerMeal = ""
+sellerContact = ""
 
 def build_menu(buttons,
                n_cols,
@@ -40,6 +49,28 @@ def build_menu(buttons,
     if footer_buttons:
         menu.append(footer_buttons)
     return menu
+
+def pullFromBackend():
+
+    # data = {
+    #   "amount" : "amount",
+    #   "date" : "date",
+    #   "location" : "location",
+    #   "mealType" : "meal",
+    #   "telegramHandle" : "contact",
+    #   "time" : "time"
+    # }
+
+#result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+
+    result = app.get('/Coupon', None)
+    print(result)
+
+    print("***")
+    print(result['-LWaKLCQoFzjTRgnflJj'])
+    print("***")
+
+pullFromBackend()
 
 def start(bot, update):
     reply_keyboard = [['Breakfast', 'Dinner']]
@@ -162,11 +193,6 @@ def pushToBackend():
 
     print(data)
 
-#result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
-
-    result = app.post('/Coupon', data)
-
-
 def contact(bot, update):
     global contact 
 
@@ -181,6 +207,9 @@ def contact(bot, update):
     print(contact)
 
     return ConversationHandler.END
+
+# def matchBuyerToSeller():
+#     for value in 
 
 
 def help(bot, update):
