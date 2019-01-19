@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from '../SellerNavigation';
 import Calendar from '../SellerCalendar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SellerHome= () => (
   <div>

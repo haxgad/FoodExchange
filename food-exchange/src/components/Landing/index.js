@@ -11,6 +11,7 @@ import HomePage from '../Home';
 import SignInPage from '../SellerSignIn';
 import SellerCalendarPage from '../SellerCalendar';
 import TransactionsPage from '../SellerTransactions';
+import SellingPage from '../SellingForm'
 
 import * as ROUTES from '../../constants/routes';
 
@@ -36,6 +37,7 @@ const Landing = () => (
         <Route path={ROUTES.SELLER_SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.SELLER_TRANSACTIONS} component={TransactionsPage} />
         <Route path={ROUTES.SELLER_CALENDAR} component={SellerCalendarPage} />
+        <Route path={ROUTES.SELLING_FORM} component={SellingPage} />
 
       </Switch>
     </Router>
