@@ -1,0 +1,25 @@
+.jumbotron{
+    height:100vh;
+    background-color: #A8D0E6;
+    background-position:center;
+}
+
+.welcome{
+    font-size: 100px;
+    font-style: italic;
+    color: white;
+}
+
+.seller{
+    background-color: #F76C6C;
+    font-size: 50px;
+    color: white;
+    padding: 10px 40px 10px 40px;
+}
+
+.buyer{
+    background-color: #374785;
+    font-size: 50px;
+    color: white;
+    padding: 10px 40px 10px 40px;
+}
