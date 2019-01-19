@@ -36,7 +36,10 @@ handleRemove = (k) => {
 }
 
 handleUpdateStatus = (k) => {
+  var updates = {};
+  updates['/soldStatus'] = true;
   const toUpdate = firebase.database().ref(`/Coupon/${k}`);
+  toUpdate.update(updates);
 }
   
   render() {
@@ -60,17 +63,30 @@ handleUpdateStatus = (k) => {
           </thead>
           <tbody>
             { this.state.coupons.map((coupon) => {
-              return (
-                <tr>
-                  <td>{coupon[0].date}</td>
-                  <td>{coupon[0].time}</td>
-                  <td>{coupon[0].amount}</td>
-                  <td>{coupon[0].location}</td>
-                  <td>{coupon[0].mealType}</td>
-                  <td><button type="button" className="btn confirmBtn btn-md">Confirm</button>
-                  <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.handleRemove(this.state.keys[coupon[1]])}>Cancel</button></td>
-                </tr>
-              )
+              if(coupon[0].soldStatus == false){
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.handleUpdateStatus(this.state.keys[coupon[1]])}>Confirm</button>
+                    <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.handleRemove(this.state.keys[coupon[1]])}>Cancel</button></td>
+                  </tr>
+                )                 
+              } else {
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td>SOLD</td>
+                  </tr>
+                )
+              }
             }) }
           </tbody>
         </table>
