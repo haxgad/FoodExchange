@@ -1,7 +1,13 @@
 import logging
 #import telegram_id
 
+from firebase import firebase
+
 import private
+import json
+
+app = firebase.FirebaseApplication('https://food-exchange-a9870.firebaseio.com', None)
+
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
@@ -16,6 +22,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT = range(6)
+
+date = ""
+time = ""
+location = ""
+amount = ""
+meal = ""
+contact = ""
 
 def build_menu(buttons,
                n_cols,
@@ -48,6 +61,7 @@ def cancel(bot, update):
     return ConversationHandler.END
 
 def meal(bot, update):
+    global meal
     reply_keyboard = [['Today', 'Tomorrow']]
     user = update.message.from_user
 
@@ -56,9 +70,15 @@ def meal(bot, update):
     update.message.reply_text('I see! I have noted your choice. Now when would you like to purchase this meal?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
+    meal = update.message.text
+
+    print(meal)
+
     return DATE
 
 def date(bot, update):
+    global date 
+
     user = update.message.from_user
     reply_keyboard = [['7-8', '8-9','9-10']]
 
@@ -67,9 +87,15 @@ def date(bot, update):
     update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
+    date = update.message.text
+
+    print(date)
+
     return TIME
 
 def time(bot, update):
+    global time
+
     user = update.message.from_user
     reply_keyboard = [['Cinnamon/Tembusu Dining Hall', 'Capt/RC4 Dining Hall']]
 
@@ -77,33 +103,83 @@ def time(bot, update):
 
     update.message.reply_text('I see! Now please chose your location.',
                                 reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+
+    time = update.message.text
+
+    print(time)
+
     return LOCATION
 
 def location(bot, update):
+    global location
+
     user = update.message.from_user
 
     logger.info("%s has selected the location: %s", user.first_name, update.message.text)
 
     update.message.reply_text('How many meals would you like to purchase?')
 
+    location = update.message.text
+
+    print(location)
+
     return AMOUNT
 
 def amount(bot, update):
+    global amount
+
     user = update.message.from_user
 
     logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
 
     update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
 
+    amount = update.message.text
+
+    print(amount)
+
     return CONTACT
 
+def pushToBackend():
+
+    # data = {
+    #   "amount" : "amount",
+    #   "date" : "date",
+    #   "location" : "location",
+    #   "mealType" : "meal",
+    #   "telegramHandle" : "contact",
+    #   "time" : "time"
+    # }
+
+    data = {
+      "amount" : amount,
+      "date" : date,
+      "location" : location,
+      "mealType" : meal,
+      "telegramHandle" : contact,
+      "time" : time
+    }
+
+    print(data)
+
+#result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+
+    result = app.post('/Coupon', data)
+
+
 def contact(bot, update):
+    global contact 
+
     user = update.message.from_user
 
     logger.info("%s contact is: %s", user.first_name, update.message.text)
 
     update.message.reply_text('I see! I have noted your contact information')
-    
+
+    contact = update.message.text
+
+    print(contact)
+
     return ConversationHandler.END
 
 
