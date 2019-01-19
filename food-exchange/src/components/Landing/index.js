@@ -9,6 +9,7 @@ import BuyerPage from '../BuyerHome';
 import SellerPage from '../SellerHome';
 import HomePage from '../Home';
 import SignInPage from '../SellerSignIn';
+import SellerCalendarPage from '../SellerCalendar';
 import TransactionsPage from '../SellerTransactions';
 
 import * as ROUTES from '../../constants/routes';
@@ -22,6 +23,8 @@ const Landing = () => (
         <Route path={ROUTES.BUYER_HOME} component={BuyerPage} />
         <Route path={ROUTES.SELLER_SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.SELLER_TRANSACTIONS} component={TransactionsPage} />
+        <Route path={ROUTES.SELLER_CALENDAR} component={SellerCalendarPage} />
+
       </Switch>
     </Router>
   </div>
