@@ -71,7 +71,8 @@ def start(bot, update):
                      'Try the /help '
                      'command to see all available commands.' 
                      '\n'
-                     'What meal would you like to purchase? Each meal costs $2',
+                     'What meal would you like to purchase? Each meal costs $2.50.\n'
+                     'You can view the menu today at @rcmealbot',
                     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
     return MEAL
@@ -176,7 +177,7 @@ def location(bot, update):
 
 #     return CONTACT
 
-def pushToBackend():
+def pushToBackend(userID):
 
     # data = {
     #   "amount" : "amount",
@@ -185,18 +186,20 @@ def pushToBackend():
     #   "mealType" : "meal",
     #   "telegramHandle" : "contact",
     #   "time" : "time"
+
     # }
 
-    data = {
-      "amount" : amount,
-      "date" : date,
-      "location" : location,
-      "mealType" : meal,
-      "telegramHandle" : contact,
-      "time" : time
-    }
+    #result = app.get('/Coupon', None)
 
-    print(data)
+    result = app.put("Coupon/" + userID ,"soldStatus", "pending")
+
+   # usersRef.child(userID).set("pending")
+
+    #result = app.post('/Coupon/' + userID, data)
+
+    print("This is the result of pushing and the userID")
+    print(userID)
+    print(result)
 
 # def contact(bot, update):
 #     global contact 
@@ -223,24 +226,30 @@ def matchBuyerToSeller(bot, update):
     print(result)
     print("PRINTING RESULT")
 
+    print(result.keys())
+
     # for value in result.values():
     #     if meal == (result[meal])
     #         print("true")
 
-    for person in result.values():
+    for (person, key) in zip(result.values(), result.keys()):
         print(person)
 
-        if person['mealType'] == meal:
-                if person['date'] == date:
-                    if person['time'] == time:
-                        if person['location'] == location:
-                            print(person['telegramHandle'])
-                            update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
-                            return
-                        else:
-                            update.message.reply_text('We did not manage to find someone at ' + location + ' but there is someone at ' + person['location'] + '! Contact them at ' + (person['telegramHandle']))
-                        return
-        else :
+        if person['soldStatus'] == 'false':
+            if person['mealType'] == meal:
+                    if person['date'] == date:
+                        if person['time'] == time:
+                            if person['location'] == location:
+                                print(person['telegramHandle'])
+                                update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                                pushToBackend(key)
+                                return
+                            else:
+                                print(location, person['location'])
+                                update.message.reply_text('We did not manage to find someone at ' + location + ' but there is someone at ' + person['location'] + '! Contact them at ' + (person['telegramHandle']))
+                                pushToBackend(key)
+                                return
+        else:
             print(meal, date, time)
 
     update.message.reply_text('No sellers are available at the moment, please try again later')
