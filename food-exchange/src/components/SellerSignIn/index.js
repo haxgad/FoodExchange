@@ -8,17 +8,28 @@ class SellerSignIn extends React.Component {
   state = {
     username: "",
     password: "",
-    toHome: false,
+    proceed: false,
+    toHome: false
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    alert(this.state.username)
-    this.setState({
-        toHome: true
+    if(this.state.username == "CalvinTantio" && this.state.password == "Food Exchange") {
+      this.setState({
+        proceed: true
       });
+    } else {
+      alert("Wrong username or password")
     }
+  }
 
+  goHome = (event) => {
+    event.preventDefault();
+    this.setState({
+      toHome: true
+    });
+  }
+  
   handleInputChange = (event) => {
     const target = event.target;
     const value = target.value;
@@ -31,8 +42,12 @@ class SellerSignIn extends React.Component {
 
   render() {
           
-    if (this.state.toHome === true) {
+    if (this.state.proceed === true) {
       return <Redirect to='/sellerhome' />
+    }
+
+    if (this.state.toHome === true) {
+      return <Redirect to="/" />
     }
 
     return (
@@ -46,14 +61,16 @@ class SellerSignIn extends React.Component {
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <div class="form-group">
                   <label for="exampleInputEmail1" class="text-uppercase">Username</label>
-                  <input type="text" id="username" class="form-control" onChange={this.handleInputChange} value={this.state.username}></input>
+                  <input type="text" id="username" class="form-control" onChange={this.handleInputChange} value={this.state.username} required></input>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1" class="text-uppercase">Password</label>
-                  <input type="password" id="password" class="form-control" onChange={this.handleInputChange} value={this.state.password}></input>
+                  <input type="password" id="password" class="form-control" onChange={this.handleInputChange} value={this.state.password} required></input>
                 </div>
                 <button type="submit" class="btn btn-secondary btn-lg btn-block"><b>Sign In</b></button>
               </form>
+              <br></br>
+              <button type="button" class="btn btn-danger btn-lg btn-block" onClick={this.goHome}><b>Back to Home</b></button>
             </div>
             <div class="col-md-8 banner-sec">
               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
