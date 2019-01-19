@@ -138,7 +138,7 @@ def main():
 
             TIME: [RegexHandler('^(7-8|8-9|9-10)$', time)],
 
-            LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall | Capt/RC4 Dining Hall)$', location)],
+            LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall|Capt/RC4 Dining Hall)$', location)],
 
             AMOUNT: [MessageHandler(Filters.text, amount)],
 
