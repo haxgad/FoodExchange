@@ -2,6 +2,8 @@ import React from 'react';
 import './sellersignin.css'
 import { Redirect } from 'react-router-dom';
 
+document.body.classList.add('background-pink');
+
 class SellerSignIn extends React.Component {
   state = {
     username: "",
@@ -32,7 +34,7 @@ class SellerSignIn extends React.Component {
     if (this.state.toHome === true) {
       return <Redirect to='/sellerhome' />
     }
-    
+
     return (
 
       <div>

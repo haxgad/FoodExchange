@@ -1,6 +1,8 @@
 html { height: 100%; }
-body {background: #DE6262;}
 
+.background-pink {
+  background: #DE6262;
+}
 .login-block {
   background: #DE6262;
   /* fallback for old browsers */
