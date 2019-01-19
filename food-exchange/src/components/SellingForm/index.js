@@ -2,16 +2,29 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './sellingform.css';
 
-const firebase = require('firebase')
+const firebase = require('firebase');
+const moment = require('moment');
 
 class SellingForm extends React.Component {
   state = {
     location: "Cinnamon / Tembusu Dinning Hall",
+    time: "07:00 - 08:00",
     amount: "1",
     mealType: "Breakfast"
   }
 
+  validDate = () => {
+    return moment().isBefore(moment(this.state.date))
+  }
+
   handleSubmit = (event) => {
+    event.preventDefault();
+
+    if(!this.validDate()) {
+        alert("Invalid date");
+        return;
+    }
+
     const newCoupon = {
         date: this.state.date,
         time: this.state.time,
@@ -23,7 +36,6 @@ class SellingForm extends React.Component {
     }
 
     firebase.database().ref('/Coupon').push(newCoupon);
-    event.preventDefault()
   }
 
   handleInputChange = (event) => {
@@ -49,24 +61,23 @@ class SellingForm extends React.Component {
   }
 
   renderTimeField = () => {
-        switch (this.state.mealType) {
-            case "Breakfast":   
-                return (
-                    <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
-                        <option>07:00 - 08:00</option>
-                        <option>08:00 - 09:00</option>
-                        <option>09:00 - 10:00</option>
-                    </select>
-                );
-            case "Dinner": 
-                return (
-                    <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>                                            <option>07:00 - 08:00</option>
-                        <option>17:00 - 18:00</option>
-                        <option>18:00 - 19:00</option>
-                        <option>19:00 - 20:00</option>
-                    </select>
-                );
-          }
+        if(this.state.mealType == "Breakfast") {
+            return (
+                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
+                    <option>07:00 - 08:00</option>
+                    <option>08:00 - 09:00</option>
+                    <option>09:00 - 10:00</option>
+                </select>
+            );
+        } else if(this.state.mealType == "Dinner") {
+            return (
+                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>                                            <option>07:00 - 08:00</option>
+                    <option>17:00 - 18:00</option>
+                    <option>18:00 - 19:00</option>
+                    <option>19:00 - 20:00</option>
+                </select>
+            );
+        }
     }
 
   render() {
@@ -87,7 +98,9 @@ class SellingForm extends React.Component {
                 </div>
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Time</label>
-                    { this.renderTimeField() }
+                    <div class="col-10">
+                        { this.renderTimeField() }
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Location</label>

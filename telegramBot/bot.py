@@ -83,7 +83,7 @@ def cancel(bot, update):
 
 def meal(bot, update):
     global meal
-    reply_keyboard = [['Today', 'Other Day']]
+    reply_keyboard = [['Today', 'Tomorrow', 'Day After Tomorrow']]
     user = update.message.from_user
 
     logger.info("%s has selected breakfast/dinner: %s", user.first_name, update.message.text)
@@ -109,8 +109,10 @@ def date(bot, update):
 
     if update.message.text == 'Today':
         date = "2019-01-20"
-    else:
+    elif update.message.text == 'Tomorrow':
         date = "2019-01-22"
+    else:
+        date = "2019-01-23"
 
     if meal == 'Breakfast':
         reply_keyboard = reply_keyboard_am
@@ -216,6 +218,10 @@ def matchBuyerToSeller(bot, update):
 
     user = update.message.from_user
 
+    print("PRINTING RESULT")
+    print(result)
+    print("PRINTING RESULT")
+
     # for value in result.values():
     #     if meal == (result[meal])
     #         print("true")
@@ -223,6 +229,7 @@ def matchBuyerToSeller(bot, update):
     for person in result.values():
         print("printing person information")
         print(person)
+        print(person['mealType'])
 
         if person['mealType'] == meal:
                 if person['date'] == date:
@@ -236,13 +243,10 @@ def matchBuyerToSeller(bot, update):
     """
     {'-LWaKLCQoFzjTRgnflJj': {'amount': 'amount', 'date': 'date', 
     'location': 'location', 'mealType': 'meal', 'telegramHandle': 'contact', 'time': 'time'}, 
-
     '-LWaMi7D1H97CG-VPgZg': {'amount': 'Capt/RC4 Dining Hall', 'date': 'Breakfast', 
     'location': '7-8', 'mealType': '/start', 'telegramHandle': 'dhsjkhsk', 'time': 'Tomorrow'}, 
-
     '-LWaOW86GA35QwYUQbwU': {'amount': 'Cinnamon/Tembusu Dining Hall', 'date': 'Breakfast', 
     'location': '9-10', 'mealType': '/start', 'telegramHandle': '10', 'time': 'Today'}, 
-
     '-LWaQO46kq5VnLBy7nWT': {'amount': '1', 'date': 'Today', 
     'location': 'Cinnamon/Tembusu Dining Hall', 'mealType': 'Breakfast', 'telegramHandle': 'djhsjkhdjks', 'time': '7-8'}, 'exampleId': {'amount': 1, 'date': '2019-01-19', 'location': 'Cinnamon Collage', 'mealType': 'Breakfast', 'soldStatus': False, 'telegramHandle': '@CalvinTantio', 'time': '15:00'}}
     """
@@ -276,7 +280,7 @@ def main():
 
             MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal)],
 
-            DATE: [MessageHandler(Filters.text, date)],
+            DATE: [RegexHandler('^(Today|Tomorrow|Day After Tomorrow)$', time)],
 
             TIME: [RegexHandler('^(07:00|08:00|09:00|17:00|18:00|19:00)$', time)],
 
