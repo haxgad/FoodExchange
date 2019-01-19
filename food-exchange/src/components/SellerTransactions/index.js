@@ -115,8 +115,8 @@ handleUpdateStatus = (k) => {
                     <td>{coupon[0].amount}</td>
                     <td>{coupon[0].location}</td>
                     <td>{coupon[0].mealType}</td>
-                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button>
-                    <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.alertCancel(this.state.keys[coupon[1]])}>Cancel</button></td>
+                    <td><button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.alertCancel(this.state.keys[coupon[1]])}>Cancel</button>
+                    <button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button></td>
                   </tr>
                 )                              
               } else {

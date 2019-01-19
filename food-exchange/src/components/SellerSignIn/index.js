@@ -4,8 +4,6 @@ import { Redirect } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 
-document.body.classList.add('background-pink');
-
 class SellerSignIn extends React.Component {
   state = {
     username: "",
