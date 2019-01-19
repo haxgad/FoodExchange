@@ -32,7 +32,7 @@ class BuyerHome extends React.Component {
             <tr>
               <th scope="col">Date</th>
               <th scope="col">Time</th>
-              <th scope="col">Amount</th>
+              <th scope="col">No. of Coupons</th>
               <th scope="col">Location</th>
               <th score="col">Meal Type</th>
               <th score="col">Telegram Handle</th>
