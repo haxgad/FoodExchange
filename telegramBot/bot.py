@@ -1,11 +1,13 @@
 import logging
 #import telegram_id
 
+import private
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
 CallbackQueryHandler, RegexHandler, ConversationHandler)
 
-TOKEN = '770876411:AAE7Xbr26fa-vkJ4BfnJV2rOntmwaD3Hsns'
+TOKEN = private.key
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
