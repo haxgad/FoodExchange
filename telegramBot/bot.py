@@ -51,17 +51,7 @@ def build_menu(buttons,
     return menu
 
 def pullFromBackend():
-
-    # data = {
-    #   "amount" : "amount",
-    #   "date" : "date",
-    #   "location" : "location",
-    #   "mealType" : "meal",
-    #   "telegramHandle" : "contact",
-    #   "time" : "time"
-    # }
-
-#result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+    global result
 
     result = app.get('/Coupon', None)
     print(result)
@@ -93,7 +83,7 @@ def cancel(bot, update):
 
 def meal(bot, update):
     global meal
-    reply_keyboard = [['Today', 'Tomorrow']]
+    reply_keyboard = [['Today', 'Other Day']]
     user = update.message.from_user
 
     logger.info("%s has selected breakfast/dinner: %s", user.first_name, update.message.text)
@@ -101,7 +91,10 @@ def meal(bot, update):
     update.message.reply_text('I see! I have noted your choice. Now when would you like to purchase this meal?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-    meal = update.message.text
+    if update.message.text == 'Today':
+        date = "2019-01-20"
+    else:
+        date = "2019-01-22"
 
     print(meal)
 
@@ -111,9 +104,12 @@ def date(bot, update):
     global date 
 
     user = update.message.from_user
-    reply_keyboard = [['7-8', '8-9','9-10']]
+    reply_keyboard_am = [['07:00', '08:00','09:00']]
+    reply_keyboard_pm = [['17:00', '18:00','19:00']]
 
     logger.info("%s has chosen date: %s", user.first_name, update.message.text)
+
+    if 
 
     update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
@@ -200,17 +196,50 @@ def contact(bot, update):
 
     logger.info("%s contact is: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('I see! I have noted your contact information')
+    update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
 
     contact = update.message.text
 
     print(contact)
 
-    return ConversationHandler.END
+    print("matching buyer to seller")
 
-# def matchBuyerToSeller():
-#     for value in 
+    matchBuyerToSeller(bot,update)
 
+def matchBuyerToSeller(bot, update):
+
+    user = update.message.from_user
+
+    # for value in result.values():
+    #     if meal == (result[meal])
+    #         print("true")
+
+    for person in result.values():
+        print("printing person information")
+        print(person)
+
+        if person['mealType'] == meal:
+                if person['date'] != date:
+                    if person['time'] != time:
+                        print(person['telegramHandle'])
+                        update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                        return
+
+    update.message.reply_text('No sellers are available at the moment, please try again later')
+
+    """
+    {'-LWaKLCQoFzjTRgnflJj': {'amount': 'amount', 'date': 'date', 
+    'location': 'location', 'mealType': 'meal', 'telegramHandle': 'contact', 'time': 'time'}, 
+
+    '-LWaMi7D1H97CG-VPgZg': {'amount': 'Capt/RC4 Dining Hall', 'date': 'Breakfast', 
+    'location': '7-8', 'mealType': '/start', 'telegramHandle': 'dhsjkhsk', 'time': 'Tomorrow'}, 
+
+    '-LWaOW86GA35QwYUQbwU': {'amount': 'Cinnamon/Tembusu Dining Hall', 'date': 'Breakfast', 
+    'location': '9-10', 'mealType': '/start', 'telegramHandle': '10', 'time': 'Today'}, 
+
+    '-LWaQO46kq5VnLBy7nWT': {'amount': '1', 'date': 'Today', 
+    'location': 'Cinnamon/Tembusu Dining Hall', 'mealType': 'Breakfast', 'telegramHandle': 'djhsjkhdjks', 'time': '7-8'}, 'exampleId': {'amount': 1, 'date': '2019-01-19', 'location': 'Cinnamon Collage', 'mealType': 'Breakfast', 'soldStatus': False, 'telegramHandle': '@CalvinTantio', 'time': '15:00'}}
+    """
 
 def help(bot, update):
     help_message = ('You can control me by sending these commands:\n'
@@ -243,7 +272,7 @@ def main():
 
             DATE: [MessageHandler(Filters.text, date)],
 
-            TIME: [RegexHandler('^(7-8|8-9|9-10)$', time)],
+            TIME: [RegexHandler('^(07:00|08:00|09:00|17:00|18:00|19:00)$', time)],
 
             LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall|Capt/RC4 Dining Hall)$', location)],
 
