@@ -2,7 +2,8 @@ import logging
 #import telegram_id
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
+CallbackQueryHandler, RegexHandler, ConversationHandler)
 
 TOKEN = '770876411:AAE7Xbr26fa-vkJ4BfnJV2rOntmwaD3Hsns'
 
@@ -12,8 +13,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-is_creating_tweet = False
-saved_tweet = None
+DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT = range(6)
 
 def build_menu(buttons,
                n_cols,
@@ -27,30 +27,58 @@ def build_menu(buttons,
     return menu
 
 def start(bot, update):
-    reply_keyboard = [['Today', 'Tomorrow', 'Another Day']]
+    reply_keyboard = [['Breakfast', 'Dinner']]
 
     update.message.reply_text(
         'Hi there! Welcome to FoodExchange, '
                      'a bot that helps you buy meal credits. '
                      'Try the /help '
                      'command to see all available commands.' 
-                     'For now, when would you like to purchase food?'
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+                     'What meal would you like to purchase?',
+                    reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-    return GENDER
+    return MEAL
 
-# def start(bot, update):
+def cancel(bot, update):
+    update.message.reply_text('Bye!',
+                              reply_markup=ReplyKeyboardRemove())
 
-#     reply_keyboard = [['Boy', 'Girl', 'Other']]
+    return ConversationHandler.END
 
-#     update.message.reply_text = ('Hi there! Welcome to FoodExchange, '
-#                     'a bot that helps you buy meal credits. '
-#                     'Try the /help '
-#                     'command to see all available commands.')
+def meal(bot, update):
+    reply_keyboard = [['Today', 'Tomorrow']]
+    user = update.message.from_user
+    update.message.reply_text('I see! I have noted your choice. Now when would you like to purchase this meal?',
+                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-#     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+    return DATE
 
+def date(bot, update):
+    user = update.message.from_user
+    reply_keyboard = [['Breakfast', 'Dinner']]
 
+    update.message.reply_text('Excellent. Now, please tell me what date you would like to purchase the meal plan for',
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+
+    return TIME
+
+def time(bot, update):
+    user = update.message.from_user
+    update.message.reply_text('I see! I have noted your choice'
+                              )
+
+    return LOCATION
+def location(bot, update):
+    user = update.message.from_user
+    update.message.reply_text('I see! I have noted your choice')
+
+    #return PHOTO
+
+def amount(bot, update):
+    user = update.message.from_user
+    update.message.reply_text('I see! I have noted your choice')
+
+    return AMOUNT
 
 def help(bot, update):
     help_message = ('You can control me by sending these commands:\n'
@@ -60,83 +88,42 @@ def help(bot, update):
 
     update.message.reply_text(help_message)
 
-
-
-def order(bot, update):
-    #global saved_tweet
-
-    # if update.message.from_user.id != telegram_id.id:
-    #     no_match_message = ('Sorry, you cannot Tweet using this bot because '
-    #                         'you are not the owner of this bot. However, you '
-    #                         'can create one for yourself by following the step'
-    #                         'by step guide at https://github.com/CT15/FastTweetBot')
-    #     update.message.reply_text(no_match_message)
-    #     return
-
-    #check_is_creating_order(update)
-
-    if saved_tweet is None:
-        fail_message = ('You have not created any Tweet yet. '
-                        'Use the /create command to create one.')
-        update.message.reply_text(fail_message)
-        return
-
-    keyboard = [[InlineKeyboardButton('Yes', callback_data='Yes'),
-                 InlineKeyboardButton('No', callback_data='No')]]
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    message = ('Are you sure? '
-               'Use the /saved command to check what you are going to Tweet.')
-
-    update.message.reply_text(message, reply_markup=reply_markup)
-
-
-def create_order(bot, update):
-    global is_creating_tweet
-    global saved_tweet
-
-    if not is_creating_tweet:
-        fail_message = ('Are you trying to create a Tweet? Use the /create '
-                        'command to do so.')
-
-        update.message.reply_text(fail_message)
-        return
-
-    char_count = len(update.message.text)
-    if char_count > 280:
-        fail_message = ("Your Tweet contains {char_count}. "
-                        'Twitter only allows a maximum of 280 characters '
-                        'per Tweet.\n'
-                        'You can start recreating your Tweet now ...')
-        update.message.reply_text(fail_message)
-
-    saved_tweet = update.message.text
-    success_message = ('Your tweet is successfully saved! '
-                       'Use the /saved command to see your saved Tweet.')
-    update.message.reply_text(success_message)
-
-    is_creating_tweet = False
-    return
-
-
 def error(bot, update, error):
-    """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 
 def main():
-    """Start the bot"""
     updater = Updater(TOKEN)
     dp = updater.dispatcher
 
-    dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(CommandHandler('help', help))
     #dp.add_handler(CommandHandler('create', create))
     #dp.add_handler(CommandHandler('tweet', tweet))
     #updater.dispatcher.add_handler(CallbackQueryHandler(confirm_tweet))
     #dp.add_handler(CommandHandler('saved', saved))
     #dp.add_handler(MessageHandler(Filters.text, create_tweet))
+
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('start', start)],
+
+        states={
+
+            MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal)],
+
+            DATE: [RegexHandler('^(Today|Tomorrow)$', date)],
+
+            TIME: [RegexHandler('^(7-8|8-9|9-10)$', time)],
+
+            LOCATION: [RegexHandler('^(Cinnamon/Tembusu | Capt/RC4)$', location)],
+
+            AMOUNT: [RegexHandler('^(1 Meal | 2 Meals)$', amount)],
+
+            CONTACT: [RegexHandler('^(1 Meal | 2 Meals)$', amount)]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)]
+    )
+
+    dp.add_handler(conv_handler)
 
     dp.add_error_handler(error)
 
