@@ -70,7 +70,8 @@ def start(bot, update):
                      'a bot that helps you buy meal credits. '
                      'Try the /help '
                      'command to see all available commands.' 
-                     'What meal would you like to purchase?',
+                     '\n'
+                     'What meal would you like to purchase? Each meal costs $2',
                     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
     return MEAL
@@ -122,7 +123,7 @@ def date(bot, update):
     update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-    date = update.message.text
+    #date = update.message.text
 
     print(date)
 
@@ -232,9 +233,15 @@ def matchBuyerToSeller(bot, update):
         if person['mealType'] == meal:
                 if person['date'] == date:
                     if person['time'] == time:
-                        print(person['telegramHandle'])
-                        update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                        if person['location'] == location:
+                            print(person['telegramHandle'])
+                            update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                            return
+                        else:
+                            update.message.reply_text('We did not manage to find someone at ' + location + ' but there is someone at ' + person['location'] + '! Contact them at ' + (person['telegramHandle']))
                         return
+        else :
+            print(meal, date, time)
 
     update.message.reply_text('No sellers are available at the moment, please try again later')
 
