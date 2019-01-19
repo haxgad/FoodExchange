@@ -8,3 +8,11 @@
     border-color: black;
     text-align: center;
 }
+
+.float-left{
+    float: left;
+}
+
+.center {
+    text-align: center;
+}

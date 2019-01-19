@@ -51,24 +51,14 @@ def build_menu(buttons,
     return menu
 
 def pullFromBackend():
-
-    # data = {
-    #   "amount" : "amount",
-    #   "date" : "date",
-    #   "location" : "location",
-    #   "mealType" : "meal",
-    #   "telegramHandle" : "contact",
-    #   "time" : "time"
-    # }
-
-#result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+    global result
 
     result = app.get('/Coupon', None)
     print(result)
 
-    print("***")
-    print(result['-LWaKLCQoFzjTRgnflJj'])
-    print("***")
+    # print("***")
+    # print(result['-LWaKLCQoFzjTRgnflJj'])
+    # print("***")
 
 pullFromBackend()
 
@@ -93,7 +83,7 @@ def cancel(bot, update):
 
 def meal(bot, update):
     global meal
-    reply_keyboard = [['Today', 'Tomorrow']]
+    reply_keyboard = [['Today', 'Other Day']]
     user = update.message.from_user
 
     logger.info("%s has selected breakfast/dinner: %s", user.first_name, update.message.text)
@@ -111,9 +101,21 @@ def date(bot, update):
     global date 
 
     user = update.message.from_user
-    reply_keyboard = [['7-8', '8-9','9-10']]
+
+    reply_keyboard_am = [['07:00', '08:00','09:00']]
+    reply_keyboard_pm = [['17:00', '18:00','19:00']]
 
     logger.info("%s has chosen date: %s", user.first_name, update.message.text)
+
+    if update.message.text == 'Today':
+        date = "2019-01-20"
+    else:
+        date = "2019-01-22"
+
+    if meal == 'Breakfast':
+        reply_keyboard = reply_keyboard_am
+    else:
+        reply_keyboard = reply_keyboard_pm
 
     update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
@@ -128,7 +130,7 @@ def time(bot, update):
     global time
 
     user = update.message.from_user
-    reply_keyboard = [['Cinnamon/Tembusu Dining Hall', 'Capt/RC4 Dining Hall']]
+    reply_keyboard = [['Cinnamon / Tembusu Dining Hall', 'Capt / RC4 Dining Hall']]
 
     logger.info("%s has chosen the following time: %s", user.first_name, update.message.text)
 
@@ -148,28 +150,28 @@ def location(bot, update):
 
     logger.info("%s has selected the location: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('How many meals would you like to purchase?')
+    update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
 
     location = update.message.text
 
     print(location)
 
-    return AMOUNT
+    matchBuyerToSeller(bot,update)
 
-def amount(bot, update):
-    global amount
+# def amount(bot, update):
+#     global amount
 
-    user = update.message.from_user
+#     user = update.message.from_user
 
-    logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
+#     logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
+#     update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
 
-    amount = update.message.text
+#     amount = update.message.text
 
-    print(amount)
+#     print(amount)
 
-    return CONTACT
+#     return CONTACT
 
 def pushToBackend():
 
@@ -193,24 +195,57 @@ def pushToBackend():
 
     print(data)
 
-def contact(bot, update):
-    global contact 
+# def contact(bot, update):
+#     global contact 
+
+#     user = update.message.from_user
+
+#     logger.info("%s contact is: %s", user.first_name, update.message.text)
+
+#     update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
+
+#     contact = update.message.text
+
+#     print(contact)
+
+#     print("matching buyer to seller")
+
+#     matchBuyerToSeller(bot,update)
+
+def matchBuyerToSeller(bot, update):
 
     user = update.message.from_user
 
-    logger.info("%s contact is: %s", user.first_name, update.message.text)
+    # for value in result.values():
+    #     if meal == (result[meal])
+    #         print("true")
 
-    update.message.reply_text('I see! I have noted your contact information')
+    for person in result.values():
+        print("printing person information")
+        print(person)
 
-    contact = update.message.text
+        if person['mealType'] == meal:
+                if person['date'] == date:
+                    if person['time'] == time:
+                        print(person['telegramHandle'])
+                        update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                        return
 
-    print(contact)
+    update.message.reply_text('No sellers are available at the moment, please try again later')
 
-    return ConversationHandler.END
+    """
+    {'-LWaKLCQoFzjTRgnflJj': {'amount': 'amount', 'date': 'date', 
+    'location': 'location', 'mealType': 'meal', 'telegramHandle': 'contact', 'time': 'time'}, 
 
-# def matchBuyerToSeller():
-#     for value in 
+    '-LWaMi7D1H97CG-VPgZg': {'amount': 'Capt/RC4 Dining Hall', 'date': 'Breakfast', 
+    'location': '7-8', 'mealType': '/start', 'telegramHandle': 'dhsjkhsk', 'time': 'Tomorrow'}, 
 
+    '-LWaOW86GA35QwYUQbwU': {'amount': 'Cinnamon/Tembusu Dining Hall', 'date': 'Breakfast', 
+    'location': '9-10', 'mealType': '/start', 'telegramHandle': '10', 'time': 'Today'}, 
+
+    '-LWaQO46kq5VnLBy7nWT': {'amount': '1', 'date': 'Today', 
+    'location': 'Cinnamon/Tembusu Dining Hall', 'mealType': 'Breakfast', 'telegramHandle': 'djhsjkhdjks', 'time': '7-8'}, 'exampleId': {'amount': 1, 'date': '2019-01-19', 'location': 'Cinnamon Collage', 'mealType': 'Breakfast', 'soldStatus': False, 'telegramHandle': '@CalvinTantio', 'time': '15:00'}}
+    """
 
 def help(bot, update):
     help_message = ('You can control me by sending these commands:\n'
@@ -243,13 +278,13 @@ def main():
 
             DATE: [MessageHandler(Filters.text, date)],
 
-            TIME: [RegexHandler('^(7-8|8-9|9-10)$', time)],
+            TIME: [RegexHandler('^(07:00|08:00|09:00|17:00|18:00|19:00)$', time)],
 
-            LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall|Capt/RC4 Dining Hall)$', location)],
+            LOCATION: [RegexHandler('^(Cinnamon / Tembusu Dining Hall|Capt / RC4 Dining Hall)$', location)],
 
-            AMOUNT: [MessageHandler(Filters.text, amount)],
+            #AMOUNT: [MessageHandler(Filters.text, amount)],
 
-            CONTACT: [MessageHandler(Filters.text, contact)]
+            #CONTACT: [MessageHandler(Filters.text, contact)]
 
             #BIO: [MessageHandler(Filters.text, bio)]
         },
