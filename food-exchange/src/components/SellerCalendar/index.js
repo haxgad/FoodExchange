@@ -53,19 +53,20 @@ class Week extends React.Component {
   render() {
     return (
       <div>
+        Current Week: {moment().week()}
         <div> {this.state.now.year()} Week : {this.state.now.week()} <br /> </div>
 
                   
         <button type="button" class="float-left btn btn-default btn-sm" onClick={this.MinusWeek}>
         <span class="glyphicon glyphicon-chevron-left"></span> Left
         </button>
-        <Day name="Monday" />
-        <Day name="Tuesday" />
-        <Day name="Wednesday" />
-        <Day name="Thursday" />
-        <Day name="Friday" />
-        <Day name="Saturday" />
-        <Day name="Sunday" />
+        <Day name="Sunday" date={this.state.now.day("Sunday").format("D/M/Y")}/>
+        <Day name="Monday" date={this.state.now.day("Monday").format("D/M/Y")}/>
+        <Day name="Tuesday" date={this.state.now.day("Tuesday").format("D/M/Y")}/>
+        <Day name="Wednesday" date={this.state.now.day("Wednesday").format("D/M/Y")}/>
+        <Day name="Thursday" date={this.state.now.day("Thursday").format("D/M/Y")}/>
+        <Day name="Friday" date={this.state.now.day("Friday").format("D/M/Y")}/>
+        <Day name="Saturday" date={this.state.now.day("Saturday").format("D/M/Y")}/>
 
         <button type="button" class="float-left btn btn-default btn-sm" onClick={this.PlusWeek}>
             <span class="glyphicon glyphicon-chevron-right"></span> Right
@@ -89,6 +90,7 @@ class Day extends React.Component {
     return (
       <div className="day">
         {this.props.name} <br />
+        {this.props.date} <br />
         <input type="checkbox" id="not_eating" name="not_eating" />
         <label for="not_eating">Not Eating</label>
       </div>
