@@ -6,20 +6,38 @@ const firebase = require('firebase')
 
 class SellingForm extends React.Component {
   state = {
-    coupons: []
+    location: "Cinnamon / Tembusu Dinning Hall",
+    amount: "1",
+    mealType: "Breakfast"
   }
 
-  componentDidMount = () => {
-    firebase.database().ref('/Coupon').on('value', snapshot => {
-      var newCoupons = []
-    
-      snapshot.forEach((coupon) => {
-        newCoupons.push(coupon.val())
-      })
-      this.setState({ coupons: newCoupons })
-    });
+  handleSubmit = (event) => {
+    const newCoupon = {
+        date: this.state.date,
+        time: this.state.time,
+        location: this.state.location,
+        mealType: this.state.mealType,
+        amount: this.state.amount,
+        telegramHandler: "@CalvinTantio",
+        soldStatus: false
+    }
+
+    firebase.database().ref('/Coupon').push(newCoupon);
+    event.preventDefault()
   }
-  
+
+  handleInputChange = (event) => {
+      const target = event.target;
+      const value = target.value;
+      const id = target.id;
+
+      this.setState({
+          [id]: value
+      });
+
+      console.log(this.state)
+  }
+
   render() {
     return (
       <div>
@@ -29,23 +47,23 @@ class SellingForm extends React.Component {
         </div>
 
         <div class="box">
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Date</label>
                     <div class="col-10">
-                        <input class="form-control" type="date" value="Date" id="date"></input>
+                        <input class="form-control" type="date" id="date" required onChange={this.handleInputChange}></input>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Time</label>
                     <div class="col-10">
-                        <input class="form-control" type="time" value="Time" id="time"></input>
+                        <input class="form-control" type="time" id="time" required onChange={this.handleInputChange}></input>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Location</label>
                     <div class="col-10">
-                        <select class="form-control" id="exampleSelect1">
+                        <select class="form-control" id="location" onChange={this.handleInputChange} value={this.state.location}>
                             <option>Cinnamon / Tembusu Dining Hall</option>
                             <option>Capt / RC4 Dining Hall</option>
                         </select>
@@ -54,7 +72,7 @@ class SellingForm extends React.Component {
                 <div class="form-group row">
                     <label class="col-2 col-form-label">No. of coupons</label>
                     <div class="col-10">
-                        <select class="form-control" id="exampleSelect1">
+                        <select class="form-control" id="amount" onChange={this.handleInputChange} value={this.state.amount}>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -64,7 +82,7 @@ class SellingForm extends React.Component {
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Meal Type</label>
                     <div class="col-10">
-                        <select class="form-control" id="exampleSelect1">
+                        <select class="form-control" id="mealType" onChange={this.handleInputChange} value={this.state.mealType}>
                             <option>Breakfast</option>
                             <option>Dinner</option>
                         </select>
