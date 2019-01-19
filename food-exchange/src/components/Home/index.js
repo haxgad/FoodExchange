@@ -1,21 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './home.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => (
-  <div className="jumbotron">
-    <div class="container">
-      <h1 className="display-3 welcome">Welcome</h1>
-      <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-      <div class="row">
-        <div class="col-xs-6">
-          <button type="button" class="btn seller btn-md"><a href ="/sellerhome">Seller</a></button>
-        </div>
-        <div class="col-xs-6">
-          <button type="button" class="btn buyer"><a href ="/buyerhome">Buyer</a></button>
-        </div>
-      </div>
+  <div>
+    <div className="jumbotron">
+      <h1 className="display-4">Welcome</h1>
+      <p className="lead">Buy or sell your meal coupons at NUS foodXchange!</p>
     </div>
+    <div class="text-center">
+          <Link to ="/sellerhome" style={{ textDecoration: 'none'}}><button type="button" class="btn seller">Sell</button></Link>
+          <Link to ="/buyerhome" style={{ textDecoration: 'none'}}><button type="button" class="btn buyer">Buy</button></Link>
+      </div>
   </div>
 );
 
