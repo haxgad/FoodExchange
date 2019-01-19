@@ -1,0 +1,19 @@
+{
+  "name": "hackroll2019",
+  "version": "1.0.0",
+  "description": "Hack and Roll 2019",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshgadodia/hackroll2019.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harshgadodia/hackroll2019/issues"
+  },
+  "homepage": "https://github.com/harshgadodia/hackroll2019#readme"
+}
