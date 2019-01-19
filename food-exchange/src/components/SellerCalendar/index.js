@@ -3,8 +3,9 @@ import './calendar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 var moment = require('moment');
+const firebase = require('firebase')
 //var now = moment();
-
+const SELLER_NAME = "calvin"
 const WEEKS_INTERVAL = 2;
 
 const SellerCalendar= () => (
@@ -15,6 +16,7 @@ const SellerCalendar= () => (
   </div>
 );
 
+
 export default SellerCalendar;
 
 class Week extends React.Component {
@@ -22,9 +24,28 @@ class Week extends React.Component {
     super(props);
 
     this.state = {
+      seller:null,
       count:WEEKS_INTERVAL,
-      now:moment()
+      now:moment(),
+      weekStatus:[]
     };
+  }
+
+  componentDidMount = () => {
+    firebase.database().ref('/Seller').on('value', snapshot => {
+
+      var mySeller = null;
+      snapshot.forEach((s) => {
+        console.log(s.key)
+        if(s.key === SELLER_NAME) {
+          mySeller = s.val();
+        }
+      })
+
+
+      console.log(mySeller);
+      this.setState({ seller: mySeller });
+    });
   }
 
   MinusWeek = () => {
@@ -34,6 +55,7 @@ class Week extends React.Component {
       //year = now.year();
       this.setState({ count: this.state.count - 1 });
       console.log("minus");
+      this.UpdateWeek();
     } else {
       console.log("Cannot minus week: not more than two weeks before!");
     }  
@@ -45,9 +67,62 @@ class Week extends React.Component {
       //week = now.week();
       //year = now.year();
       this.setState({ count: this.state.count + 1 });
+      this.UpdateWeek();
     } else {
       console.log("Cannot add week: not more than two weeks after!");
     }  
+  }
+
+  UpdateWeek = () => {
+    var thisWeek = this.state.now.week();
+    var newWeekStatus = []
+    if(this.state.seller != null && "week" + thisWeek in this.state.seller["noteaten"]["weeks"]) {
+      console.log(this.state.seller["noteaten"]["weeks"]["week" + thisWeek])
+      for(var i=1; i<=7; i++) {
+        if ("day" + i in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]) {
+          newWeekStatus.push("true");
+        } else {
+          newWeekStatus.push("false");
+        }
+      }
+    }
+    this.setState({ weekStatus: newWeekStatus });
+    console.log(this.state.weekStatus);
+  }
+
+  UpdateDatabase = (newSeller) => {
+    firebase.database().ref('/Seller/calvin').set(newSeller);
+  }
+  
+  ClickCheckbox = (week, day, value) => {
+    var newSeller =  this.state.seller;
+    if (value) {  
+      if (newSeller != null) {
+        if("week" + week in newSeller["noteaten"]["weeks"]) {
+          if ("day" + day in newSeller["noteaten"]["weeks"]["week" + week]) {
+            newSeller["noteaten"]["weeks"]["week" + week]["day" + day] = true
+          } else {
+            // day not created yet
+            //const dayObj = {};
+            //dayObj["day" + day] = true;
+            newSeller["noteaten"]["weeks"]["week" + week]["day" + day] = true
+          }
+        } else {
+          const dayObj = {};
+          dayObj["day" + day] = true;
+  
+          // week not created yet
+          newSeller["noteaten"]["weeks"]["week" + week] = dayObj;
+        }
+      }
+    } else {
+      // remove from week object
+      delete newSeller["noteaten"]["weeks"]["week" + week]["day" + day]; 
+    }
+
+    console.log(newSeller);
+    this.setState({ seller: newSeller });
+    this.UpdateWeek();
   }
 
   render() {
@@ -57,19 +132,23 @@ class Week extends React.Component {
         <div> {this.state.now.year()} Week : {this.state.now.week()} <br /> </div>
 
                   
-        <button type="button" class="float-left btn btn-default btn-sm" onClick={this.MinusWeek}>
-        <span class="glyphicon glyphicon-chevron-left"></span> Left
+        <button type="button" className="float-left btn btn-default btn-sm" onClick={this.MinusWeek}>
+        <span className="glyphicon glyphicon-chevron-left"></span> Left
         </button>
-        <Day name="Sunday" date={this.state.now.day("Sunday").format("D/M/Y")}/>
-        <Day name="Monday" date={this.state.now.day("Monday").format("D/M/Y")}/>
-        <Day name="Tuesday" date={this.state.now.day("Tuesday").format("D/M/Y")}/>
-        <Day name="Wednesday" date={this.state.now.day("Wednesday").format("D/M/Y")}/>
-        <Day name="Thursday" date={this.state.now.day("Thursday").format("D/M/Y")}/>
-        <Day name="Friday" date={this.state.now.day("Friday").format("D/M/Y")}/>
-        <Day name="Saturday" date={this.state.now.day("Saturday").format("D/M/Y")}/>
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="1" name="Sunday" date={this.state.now.day("Sunday").format("D/M/Y")} isChecked={this.state.weekStatus[0]} />
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="2" name="Monday" date={this.state.now.day("Monday").format("D/M/Y")} isChecked={this.state.weekStatus[1]}/>
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="3" name="Tuesday" date={this.state.now.day("Tuesday").format("D/M/Y")} isChecked={this.state.weekStatus[2]}/>
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="4" name="Wednesday" date={this.state.now.day("Wednesday").format("D/M/Y")} isChecked={this.state.weekStatus[3]}/>
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="5" name="Thursday" date={this.state.now.day("Thursday").format("D/M/Y")} isChecked={this.state.weekStatus[4]} />
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="6" name="Friday" date={this.state.now.day("Friday").format("D/M/Y")} isChecked={this.state.weekStatus[5]}/>
+        <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="7" name="Saturday" date={this.state.now.day("Saturday").format("D/M/Y")} isChecked={this.state.weekStatus[6]}/>
 
-        <button type="button" class="float-left btn btn-default btn-sm" onClick={this.PlusWeek}>
-            <span class="glyphicon glyphicon-chevron-right"></span> Right
+        <button type="button" className="float-left btn btn-default btn-sm" onClick={this.PlusWeek}>
+            <span className="glyphicon glyphicon-chevron-right"></span> Right
+        </button>
+
+        <button type="button" onClick={()=> this.UpdateDatabase(this.state.seller)}>
+        Update Database 
         </button>
       </div>
 
@@ -82,17 +161,20 @@ class Day extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notEating: false
+      notEating: false,
+      checked: (this.props.isChecked==="true")? true:false,
     };
   }
 
   render() {
+
+    var value = (this.props.isChecked==="true")? true:false;
     return (
       <div className="day">
         {this.props.name} <br />
         {this.props.date} <br />
-        <input type="checkbox" id="not_eating" name="not_eating" />
-        <label for="not_eating">Not Eating</label>
+        <input type="checkbox" id="not_eating" name="not_eating" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
+        <label htmlFor="not_eating">Not Eating</label>
       </div>
     );
   }
