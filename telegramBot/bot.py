@@ -1,11 +1,13 @@
 import logging
 #import telegram_id
 
+import private
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
 CallbackQueryHandler, RegexHandler, ConversationHandler)
 
-TOKEN = '770876411:AAE7Xbr26fa-vkJ4BfnJV2rOntmwaD3Hsns'
+TOKEN = private.key
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -48,6 +50,9 @@ def cancel(bot, update):
 def meal(bot, update):
     reply_keyboard = [['Today', 'Tomorrow']]
     user = update.message.from_user
+
+    logger.info("%s has selected breakfast/dinner: %s", user.first_name, update.message.text)
+
     update.message.reply_text('I see! I have noted your choice. Now when would you like to purchase this meal?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
@@ -55,30 +60,52 @@ def meal(bot, update):
 
 def date(bot, update):
     user = update.message.from_user
-    reply_keyboard = [['Breakfast', 'Dinner']]
+    reply_keyboard = [['7-8', '8-9','9-10']]
 
-    update.message.reply_text('Excellent. Now, please tell me what date you would like to purchase the meal plan for',
+    logger.info("%s has chosen date: %s", user.first_name, update.message.text)
+
+    update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
     return TIME
 
 def time(bot, update):
     user = update.message.from_user
-    update.message.reply_text('I see! I have noted your choice'
-                              )
+    reply_keyboard = [['Cinnamon/Tembusu Dining Hall', 'Capt/RC4 Dining Hall']]
 
+    logger.info("%s has chosen the following time: %s", user.first_name, update.message.text)
+
+    update.message.reply_text('I see! Now please chose your location.',
+                                reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
     return LOCATION
+
 def location(bot, update):
     user = update.message.from_user
-    update.message.reply_text('I see! I have noted your choice')
 
-    #return PHOTO
+    logger.info("%s has selected the location: %s", user.first_name, update.message.text)
+
+    update.message.reply_text('How many meals would you like to purchase?')
+
+    return AMOUNT
 
 def amount(bot, update):
     user = update.message.from_user
-    update.message.reply_text('I see! I have noted your choice')
 
-    return AMOUNT
+    logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
+
+    update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
+
+    return CONTACT
+
+def contact(bot, update):
+    user = update.message.from_user
+
+    logger.info("%s contact is: %s", user.first_name, update.message.text)
+
+    update.message.reply_text('I see! I have noted your contact information')
+    
+    return ConversationHandler.END
+
 
 def help(bot, update):
     help_message = ('You can control me by sending these commands:\n'
@@ -109,15 +136,17 @@ def main():
 
             MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal)],
 
-            DATE: [RegexHandler('^(Today|Tomorrow)$', date)],
+            DATE: [MessageHandler(Filters.text, date)],
 
             TIME: [RegexHandler('^(7-8|8-9|9-10)$', time)],
 
-            LOCATION: [RegexHandler('^(Cinnamon/Tembusu | Capt/RC4)$', location)],
+            LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall|Capt/RC4 Dining Hall)$', location)],
 
-            AMOUNT: [RegexHandler('^(1 Meal | 2 Meals)$', amount)],
+            AMOUNT: [MessageHandler(Filters.text, amount)],
 
-            CONTACT: [RegexHandler('^(1 Meal | 2 Meals)$', amount)]
+            CONTACT: [MessageHandler(Filters.text, contact)]
+
+            #BIO: [MessageHandler(Filters.text, bio)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
