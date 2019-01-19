@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/harshgadodia/hackroll2019/issues"
   },
-  "homepage": "https://github.com/harshgadodia/hackroll2019#readme"
+  "homepage": "https://github.com/harshgadodia/hackroll2019#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.5"
+  }
 }
