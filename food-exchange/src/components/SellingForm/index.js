@@ -31,7 +31,7 @@ class SellingForm extends React.Component {
         location: this.state.location,
         mealType: this.state.mealType,
         amount: this.state.amount,
-        telegramHandler: "@CalvinTantio",
+        telegramHandle: "@CalvinTantio",
         soldStatus: false
     }
 
