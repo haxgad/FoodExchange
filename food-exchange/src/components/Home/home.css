@@ -1,7 +1,10 @@
-
 .welcome{
     font-size: 100px;
     font-style: italic;
+}
+
+.background-color {
+    background-color: white;
 }
 
 .seller{

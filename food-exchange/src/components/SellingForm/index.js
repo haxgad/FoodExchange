@@ -7,7 +7,7 @@ const moment = require('moment');
 
 class SellingForm extends React.Component {
   state = {
-    location: "Cinnamon / Tembusu Dinning Hall",
+    location: "Cinnamon / Tembusu Dining Hall",
     time: "07:00 - 08:00",
     amount: "1",
     mealType: "Breakfast"
