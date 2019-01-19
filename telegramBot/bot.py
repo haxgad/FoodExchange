@@ -56,9 +56,9 @@ def pullFromBackend():
     result = app.get('/Coupon', None)
     print(result)
 
-    print("***")
-    print(result['-LWaKLCQoFzjTRgnflJj'])
-    print("***")
+    # print("***")
+    # print(result['-LWaKLCQoFzjTRgnflJj'])
+    # print("***")
 
 pullFromBackend()
 
@@ -91,10 +91,7 @@ def meal(bot, update):
     update.message.reply_text('I see! I have noted your choice. Now when would you like to purchase this meal?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-    if update.message.text == 'Today':
-        date = "2019-01-20"
-    else:
-        date = "2019-01-22"
+    meal = update.message.text
 
     print(meal)
 
@@ -104,12 +101,21 @@ def date(bot, update):
     global date 
 
     user = update.message.from_user
+
     reply_keyboard_am = [['07:00', '08:00','09:00']]
     reply_keyboard_pm = [['17:00', '18:00','19:00']]
 
     logger.info("%s has chosen date: %s", user.first_name, update.message.text)
 
-    if 
+    if update.message.text == 'Today':
+        date = "2019-01-20"
+    else:
+        date = "2019-01-22"
+
+    if meal == 'Breakfast':
+        reply_keyboard = reply_keyboard_am
+    else:
+        reply_keyboard = reply_keyboard_pm
 
     update.message.reply_text('Excellent. Now, please tell me what time you would like to purchase the meal credit?',
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
@@ -124,7 +130,7 @@ def time(bot, update):
     global time
 
     user = update.message.from_user
-    reply_keyboard = [['Cinnamon/Tembusu Dining Hall', 'Capt/RC4 Dining Hall']]
+    reply_keyboard = [['Cinnamon / Tembusu Dining Hall', 'Capt / RC4 Dining Hall']]
 
     logger.info("%s has chosen the following time: %s", user.first_name, update.message.text)
 
@@ -144,28 +150,28 @@ def location(bot, update):
 
     logger.info("%s has selected the location: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('How many meals would you like to purchase?')
+    update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
 
     location = update.message.text
 
     print(location)
 
-    return AMOUNT
+    matchBuyerToSeller(bot,update)
 
-def amount(bot, update):
-    global amount
+# def amount(bot, update):
+#     global amount
 
-    user = update.message.from_user
+#     user = update.message.from_user
 
-    logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
+#     logger.info("%s has selected the amount: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
+#     update.message.reply_text('I see! I have noted your choice. Now please give me your telegram handle')
 
-    amount = update.message.text
+#     amount = update.message.text
 
-    print(amount)
+#     print(amount)
 
-    return CONTACT
+#     return CONTACT
 
 def pushToBackend():
 
@@ -189,22 +195,22 @@ def pushToBackend():
 
     print(data)
 
-def contact(bot, update):
-    global contact 
+# def contact(bot, update):
+#     global contact 
 
-    user = update.message.from_user
+#     user = update.message.from_user
 
-    logger.info("%s contact is: %s", user.first_name, update.message.text)
+#     logger.info("%s contact is: %s", user.first_name, update.message.text)
 
-    update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
+#     update.message.reply_text('I see! I have noted your contact information. I am now trying to match you with the most suitable seller ...')
 
-    contact = update.message.text
+#     contact = update.message.text
 
-    print(contact)
+#     print(contact)
 
-    print("matching buyer to seller")
+#     print("matching buyer to seller")
 
-    matchBuyerToSeller(bot,update)
+#     matchBuyerToSeller(bot,update)
 
 def matchBuyerToSeller(bot, update):
 
@@ -219,8 +225,8 @@ def matchBuyerToSeller(bot, update):
         print(person)
 
         if person['mealType'] == meal:
-                if person['date'] != date:
-                    if person['time'] != time:
+                if person['date'] == date:
+                    if person['time'] == time:
                         print(person['telegramHandle'])
                         update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
                         return
@@ -274,11 +280,11 @@ def main():
 
             TIME: [RegexHandler('^(07:00|08:00|09:00|17:00|18:00|19:00)$', time)],
 
-            LOCATION: [RegexHandler('^(Cinnamon/Tembusu Dining Hall|Capt/RC4 Dining Hall)$', location)],
+            LOCATION: [RegexHandler('^(Cinnamon / Tembusu Dining Hall|Capt / RC4 Dining Hall)$', location)],
 
-            AMOUNT: [MessageHandler(Filters.text, amount)],
+            #AMOUNT: [MessageHandler(Filters.text, amount)],
 
-            CONTACT: [MessageHandler(Filters.text, contact)]
+            #CONTACT: [MessageHandler(Filters.text, contact)]
 
             #BIO: [MessageHandler(Filters.text, bio)]
         },
