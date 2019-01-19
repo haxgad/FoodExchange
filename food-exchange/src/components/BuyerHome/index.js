@@ -1,22 +1,52 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 const firebase = require('firebase')
 
 class BuyerHome extends React.Component {
   state = {
-    coupons: []
+    coupons: [],
+    keys: []
   }
 
   componentDidMount = () => {
     firebase.database().ref('/Coupon').on('value', snapshot => {
       var newCoupons = []
-    
+      var newKeys = []
+      newKeys = Object.keys(snapshot.val())
+      var i = 0
+
       snapshot.forEach((coupon) => {
-        newCoupons.push(coupon.val())
+        newCoupons.push([coupon.val(), i])
+        i++
       })
-      this.setState({ coupons: newCoupons })
+
+      this.setState({ coupons: newCoupons, keys : newKeys })
     });
+  }
+
+  alertConfirm = (k) => {
+    confirmAlert({
+      title: 'Confirm buying coupon',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => this.handleUpdateStatus(k)
+        },
+        {
+          label: 'No',
+        }
+      ]
+    })
+  }
+
+  handleUpdateStatus = (k) => {
+    var updates = {};
+    updates['/soldStatus'] = "pending";
+    const toUpdate = firebase.database().ref(`/Coupon/${k}`);
+    toUpdate.update(updates);
   }
   
   render() {
@@ -41,17 +71,19 @@ class BuyerHome extends React.Component {
           </thead>
           <tbody>
             { this.state.coupons.map((coupon) => {
-              return (
-                <tr>
-                  <td>{coupon.date}</td>
-                  <td>{coupon.time}</td>
-                  <td>{coupon.amount}</td>
-                  <td>{coupon.location}</td>
-                  <td>{coupon.mealType}</td>
-                  <td>{coupon.telegramHandle}</td>
-                  <td><button type="button" className="btn btn-primary btn-md">Confirm</button></td>
-                </tr>
-              )
+              if(coupon[0].soldStatus === "false"){
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td>{coupon[0].telegramHandle}</td>
+                    <td><button type="button" className="btn btn-primary btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button></td>
+                  </tr>
+                )
+              }
             }) }
           </tbody>
         </table>

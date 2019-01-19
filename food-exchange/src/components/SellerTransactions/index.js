@@ -1,5 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import "./transac.css";
 
 const firebase = require('firebase')
@@ -30,14 +32,45 @@ class SellerTransactions extends React.Component {
     });
   }
 
+alertCancel = (k) => {
+  confirmAlert({
+    title: 'Cancel coupon sale',
+    message: 'Are you sure you want to cancel?',
+    buttons: [
+      {
+        label: 'Yes',
+        onClick: () => this.handleRemove(k)
+      },
+      {
+        label: 'No',
+      }
+    ]
+  })
+}
+
+alertConfirm = (k) => {
+  confirmAlert({
+    title: 'Confirm coupon sale',
+    buttons: [
+      {
+        label: 'Yes',
+        onClick: () => this.handleUpdateStatus(k)
+      },
+      {
+        label: 'No',
+      }
+    ]
+  })
+}
+
 handleRemove = (k) => {
     const toCancel = firebase.database().ref(`/Coupon/${k}`);
-    toCancel.remove();
+     toCancel.remove();
 }
 
 handleUpdateStatus = (k) => {
   var updates = {};
-  updates['/soldStatus'] = true;
+  updates['/soldStatus'] = "true";
   const toUpdate = firebase.database().ref(`/Coupon/${k}`);
   toUpdate.update(updates);
 }
@@ -63,7 +96,7 @@ handleUpdateStatus = (k) => {
           </thead>
           <tbody>
             { this.state.coupons.map((coupon) => {
-              if(coupon[0].soldStatus == false){
+              if(coupon[0].soldStatus === "false"){
                 return (
                   <tr>
                     <td>{coupon[0].date}</td>
@@ -71,10 +104,21 @@ handleUpdateStatus = (k) => {
                     <td>{coupon[0].amount}</td>
                     <td>{coupon[0].location}</td>
                     <td>{coupon[0].mealType}</td>
-                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.handleUpdateStatus(this.state.keys[coupon[1]])}>Confirm</button>
-                    <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.handleRemove(this.state.keys[coupon[1]])}>Cancel</button></td>
+                    <td><button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.alertCancel(this.state.keys[coupon[1]])}>Cancel</button></td>
                   </tr>
-                )                 
+                )
+              } else if (coupon[0].soldStatus === "pending"){
+                return (
+                  <tr>
+                    <td>{coupon[0].date}</td>
+                    <td>{coupon[0].time}</td>
+                    <td>{coupon[0].amount}</td>
+                    <td>{coupon[0].location}</td>
+                    <td>{coupon[0].mealType}</td>
+                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button>
+                    <button type="button" className="btn cancelBtn btn-md" onClick= {()=>this.alertCancel(this.state.keys[coupon[1]])}>Cancel</button></td>
+                  </tr>
+                )                              
               } else {
                 return (
                   <tr>
