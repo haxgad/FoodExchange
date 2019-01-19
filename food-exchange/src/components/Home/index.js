@@ -22,7 +22,7 @@ const Home = () => (
         <img src={logo} class="center" width="30%"></img>
       </div>
     </div>
-    <h2 class="float-text"><b>FoodExchange Telegram Bot</b></h2>
+    <h2 class="float-text"><b>Our Telegram Bot</b></h2>
   </div>
 );
 
