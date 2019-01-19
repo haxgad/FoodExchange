@@ -3,9 +3,31 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Coupon = require('../../models/Coupon').default
 
+const firebase = require('firebase')
+const config = {
+  apiKey: "AIzaSyCwdK6thARXfiiiRTr2Xlu-DJC-YesbCQE",
+  authDomain: "food-exchange-a9870.firebaseapp.com",
+  databaseURL: "https://food-exchange-a9870.firebaseio.com",
+  projectId: "food-exchange-a9870",
+  storageBucket: "food-exchange-a9870.appspot.com",
+  messagingSenderId: "84559066060"
+};
+firebase.initializeApp(config);
+
 class BuyerHome extends React.Component {
   state = {
-    coupons: [] // this is an array of coupons
+    coupons: []
+  }
+
+  componentDidMount = () => {
+    firebase.database().ref('/Coupon').on('value', snapshot => {
+      var newCoupons = []
+    
+      snapshot.forEach((coupon) => {
+        newCoupons.push(coupon.val())
+      })
+      this.setState({ coupons: newCoupons })
+    });
   }
   
   render() {
@@ -38,7 +60,7 @@ class BuyerHome extends React.Component {
                   <td>{coupon.location}</td>
                   <td>{coupon.mealType}</td>
                   <td>{coupon.telegramHandle}</td>
-                  <td><button type="button" class="btn btn-primary btn-md">Confirm</button></td>
+                  <td><button type="button" className="btn btn-primary btn-md">Confirm</button></td>
                 </tr>
               )
             }) }
