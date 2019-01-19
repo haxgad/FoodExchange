@@ -1,13 +1,6 @@
-.jumbotron{
-    height:100vh;
-    background-color: #A8D0E6;
-    background-position:center;
-}
-
 .welcome{
     font-size: 100px;
     font-style: italic;
-    color: white;
 }
 
 .seller{
