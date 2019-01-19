@@ -102,17 +102,17 @@ def date(bot, update):
 
     user = update.message.from_user
 
-    reply_keyboard_am = [['07:00', '08:00','09:00']]
-    reply_keyboard_pm = [['17:00', '18:00','19:00']]
+    reply_keyboard_am = [['07:00 - 08:00', '08:00 - 09:00','09:00 - 10:00']]
+    reply_keyboard_pm = [['17:00 - 18:00', '18:00 - 19:00','19:00 - 20:00']]
 
     logger.info("%s has chosen date: %s", user.first_name, update.message.text)
 
     if update.message.text == 'Today':
         date = "2019-01-20"
     elif update.message.text == 'Tomorrow':
-        date = "2019-01-22"
+        date = "2019-01-21"
     else:
-        date = "2019-01-23"
+        date = "2019-01-22"
 
     if meal == 'Breakfast':
         reply_keyboard = reply_keyboard_am
@@ -227,9 +227,7 @@ def matchBuyerToSeller(bot, update):
     #         print("true")
 
     for person in result.values():
-        print("printing person information")
         print(person)
-        print(person['mealType'])
 
         if person['mealType'] == meal:
                 if person['date'] == date:
@@ -280,9 +278,9 @@ def main():
 
             MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal)],
 
-            DATE: [RegexHandler('^(Today|Tomorrow|Day After Tomorrow)$', time)],
+            DATE: [RegexHandler('^(Today|Tomorrow|Day After Tomorrow)$', date)],
 
-            TIME: [RegexHandler('^(07:00|08:00|09:00|17:00|18:00|19:00)$', time)],
+            TIME: [RegexHandler('^(07:00 - 08:00|08:00 - 09:00|09:00 - 10:00|17:00 - 18:00|18:00 - 19:00|19:00 - 20:00)$', time)],
 
             LOCATION: [RegexHandler('^(Cinnamon / Tembusu Dining Hall|Capt / RC4 Dining Hall)$', location)],
 
