@@ -1,6 +1,6 @@
 .cancelBtn{
     background-color: #F76C6C;
-    margin-left: 5px;
+    margin-right: 5px;
     color: white;
 }
 
@@ -12,7 +12,7 @@
 .confirmBtn{
     background-color: #3AAFA9;
     color: white;
-    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .confirmBtn:hover{
