@@ -86,47 +86,58 @@ class Week extends React.Component {
     var thisWeek = this.state.now.week();
     var newWeekStatus = []
     if(this.state.seller != null && "week" + thisWeek in this.state.seller["noteaten"]["weeks"]) {
-      console.log(this.state.seller["noteaten"]["weeks"]["week" + thisWeek])
       for(var i=1; i<=7; i++) {
+        var typeArray = [];
         if ("day" + i in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]) {
-          newWeekStatus.push("true");
-        } else {
-          newWeekStatus.push("false");
+          if("breakfast" in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]["day" + i]) {
+            typeArray.push(["breakfast", "true"])
+          }
+
+          if("dinner" in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]["day" + i]) {
+            typeArray.push(["dinner", "true"])
+          }
         }
+        newWeekStatus.push(typeArray);
       }
     }
-    this.setState({ weekStatus: newWeekStatus });
-    console.log(this.state.weekStatus);
+    this.setState({ weekStatus: newWeekStatus }, function () {
+      console.log(this.state.weekStatus);
+  });
   }
 
   UpdateDatabase = (newSeller) => {
     firebase.database().ref('/Seller/calvin').set(newSeller);
   }
   
-  ClickCheckbox = (week, day, value) => {
+  ClickCheckbox = (week, day, type, value) => {
     var newSeller =  this.state.seller;
     if (value) {  
       if (newSeller != null) {
         if("week" + week in newSeller["noteaten"]["weeks"]) {
           if ("day" + day in newSeller["noteaten"]["weeks"]["week" + week]) {
-            newSeller["noteaten"]["weeks"]["week" + week]["day" + day] = true
+            newSeller["noteaten"]["weeks"]["week" + week]["day" + day][type] = true;
           } else {
+            const typeObj = {};
+            // type could be breakfast or dinner
+            typeObj[type] = true;
             // day not created yet
-            //const dayObj = {};
-            //dayObj["day" + day] = true;
-            newSeller["noteaten"]["weeks"]["week" + week]["day" + day] = true
+            newSeller["noteaten"]["weeks"]["week" + week]["day" + day] = typeObj;
           }
         } else {
+          const typeObj = {};
+          // type could be breakfast or dinner
+          typeObj[type] = true;
+
           const dayObj = {};
-          dayObj["day" + day] = true;
+          dayObj["day" + day] = typeObj;
   
           // week not created yet
           newSeller["noteaten"]["weeks"]["week" + week] = dayObj;
         }
       }
     } else {
-      // remove from week object
-      delete newSeller["noteaten"]["weeks"]["week" + week]["day" + day]; 
+      // remove from day object
+      delete newSeller["noteaten"]["weeks"]["week" + week]["day" + day][type]; 
     }
 
     console.log(newSeller);
@@ -146,7 +157,7 @@ class Week extends React.Component {
           <p className="lead">Where you plan and keep tracks your your meal plan</p>
           <hr></hr>
           <div class="text-center"> 
-            <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
+            <button type="button" className="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
           </div>
         </div>
 
@@ -186,15 +197,31 @@ class Week extends React.Component {
 class Day extends React.Component {
   constructor(props) {
     super(props);
+    var isChecked;
+    if(this.props.isChecked == null) {
+      isChecked = []
+    } else {
+      isChecked = this.props.isChecked;
+    }
+
     this.state = {
       notEating: false,
-      checked: (this.props.isChecked==="true")? true:false,
+      isBfChecked: (isChecked.length > 0 && isChecked[0][0] === "breakfast")? true:false,
+      isDinChecked: ((isChecked.length > 0) && (isChecked.length > 1 || (isChecked[0][0] === "dinner")))? true:false,
     };
   }
 
   render() {
 
-    var value = (this.props.isChecked==="true")? true:false;
+    var isChecked;
+    if(this.props.isChecked == null) {
+      isChecked = []
+    } else {
+      isChecked = this.props.isChecked;
+    }
+
+    var isBfChecked = (isChecked.length > 0 && isChecked[0][0] === "breakfast")? true:false;
+    var isDinChecked = ((isChecked.length > 0) && (isChecked.length > 1 || (isChecked[0][0] === "dinner")))? true:false;
     return (
       <div>
         <table className="table">
@@ -206,11 +233,11 @@ class Day extends React.Component {
         <tbody>
         <tr>
           <p> Not Eating </p>
-          <td><input type="checkbox" id="breakfast" name="breakfast" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
+          <td><input type="checkbox" id="breakfast" name="breakfast" checked={isBfChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, "breakfast", !isBfChecked); }}/>
             <label for="breakfast">breakfast</label>
           </td>
 
-          <td><input type="checkbox" id="dinner" name="dinner" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
+          <td><input type="checkbox" id="dinner" name="dinner" checked={isDinChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, "dinner", !isDinChecked); }}/>
             <label for="dinner">dinner</label>
           </td>
         </tr>
