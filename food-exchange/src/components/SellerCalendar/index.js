@@ -54,6 +54,7 @@ class Week extends React.Component {
 
       console.log(mySeller);
       this.setState({ seller: mySeller });
+      this.UpdateWeek();
     });
   }
 
@@ -236,9 +237,9 @@ class Day extends React.Component {
         <tr>
           <td>
             <div className="customTd">
-            <input type="checkbox" id="breakfast" name="breakfast" checked={isBfChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !isBfChecked); }}/>
+            <input type="checkbox" id="breakfast" name="breakfast" checked={isBfChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, "breakfast", !isBfChecked); }}/>
               <label for="breakfast" style={{marginLeft:'5px'}}>Didn't eat breakfast</label><br />
-            <input type="checkbox" id="dinner" name="dinner" checked={isDinChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !isDinChecked); }}/>
+            <input type="checkbox" id="dinner" name="dinner" checked={isDinChecked} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, "dinner", !isDinChecked); }}/>
               <label for="dinner" style={{marginLeft:'5px'}}>Didn't eat dinner</label>
             </div>
           </td>
