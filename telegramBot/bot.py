@@ -88,7 +88,7 @@ def cancel(bot, update):
 
 def meal(bot, update):
     global meal
-    reply_keyboard = [['Today', 'Tomorrow', 'Day After Tomorrow']]
+    reply_keyboard = [['Today\n', 'Tomorrow\n', 'Day After Tomorrow\n']]
     user = update.message.from_user
 
     logger.info("%s has selected breakfast/dinner: %s", user.first_name, update.message.text)
@@ -107,8 +107,8 @@ def date(bot, update):
 
     user = update.message.from_user
 
-    reply_keyboard_am = [['07:00 - 08:00', '08:00 - 09:00','09:00 - 10:00']]
-    reply_keyboard_pm = [['17:00 - 18:00', '18:00 - 19:00','19:00 - 20:00']]
+    reply_keyboard_am = [['07:00 - 08:00\n', '08:00 - 09:00\n','09:00 - 10:00\n']]
+    reply_keyboard_pm = [['17:00 - 18:00\n', '18:00 - 19:00\n','19:00 - 20:00\n']]
 
     logger.info("%s has chosen date: %s", user.first_name, update.message.text)
 
@@ -137,7 +137,7 @@ def time(bot, update):
     global time
 
     user = update.message.from_user
-    reply_keyboard = [['Cinnamon / Tembusu Dining Hall', 'Capt / RC4 Dining Hall']]
+    reply_keyboard = [['Cinnamon / Tembusu Dining Hall\n', 'Capt / RC4 Dining Hall\n']]
 
     logger.info("%s has chosen the following time: %s", user.first_name, update.message.text)
 
@@ -257,6 +257,10 @@ def matchBuyerToSeller(bot, update):
     update.message.reply_text('No sellers are available at the moment, press /retry to retry again')
 
 def retry(bot, update):
+
+    if contact == "":
+        update.message.reply_text('You have not filled in the required fields. Press /start or continue filling in the information required.')
+        return
 
     print("calling RETRY function now")
 
