@@ -48,6 +48,8 @@ class SellingForm extends React.Component {
   }
 
   handleInputChange = (event) => {
+      event.preventDefault();
+      
       const target = event.target;
       const value = target.value;
       const id = target.id;
@@ -72,7 +74,7 @@ class SellingForm extends React.Component {
   renderTimeField = () => {
         if(this.state.mealType == "Breakfast") {
             return (
-                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
+                <select value="07:00 - 08:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
                     <option>07:00 - 08:00</option>
                     <option>08:00 - 09:00</option>
                     <option>09:00 - 10:00</option>
@@ -80,7 +82,7 @@ class SellingForm extends React.Component {
             );
         } else if(this.state.mealType == "Dinner") {
             return (
-                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>                                            <option>07:00 - 08:00</option>
+                <select value="17:00 - 18:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
                     <option>17:00 - 18:00</option>
                     <option>18:00 - 19:00</option>
                     <option>19:00 - 20:00</option>
