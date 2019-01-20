@@ -205,13 +205,13 @@ class Day extends React.Component {
         </thead>
         <tbody>
         <tr>
-          <p> Not Eating </p>
-          <td><input type="checkbox" id="breakfast" name="breakfast" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
-            <label for="breakfast">breakfast</label>
-          </td>
-
-          <td><input type="checkbox" id="dinner" name="dinner" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
-            <label for="dinner">dinner</label>
+          <td>
+            <div className="customTd">
+            <input type="checkbox" id="breakfast" name="breakfast" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
+              <label for="breakfast" style={{marginLeft:'5px'}}>Didn't eat breakfast</label><br />
+            <input type="checkbox" id="dinner" name="dinner" checked={value} onClick={ () => { this.props.clickCheckbox(this.props.week, this.props.day, !value); }}/>
+              <label for="dinner" style={{marginLeft:'5px'}}>Didn't eat dinner</label>
+            </div>
           </td>
         </tr>
         </tbody>

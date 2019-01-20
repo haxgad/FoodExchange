@@ -23,3 +23,8 @@
 .center {
     text-align: center;
 }
+
+.customTd{
+   display: inline-block;
+   text-align: left;
+}
