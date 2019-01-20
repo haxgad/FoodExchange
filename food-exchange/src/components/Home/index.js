@@ -8,7 +8,7 @@ const Home = () => (
   <div>
     <div className="jumbotron">
       <h1 className="display-4"><b>Welcome</b></h1>
-      <h2 className="lead"><b>Buy or sell your meal coupons at NUS Food Exchange!</b></h2>
+      <h2 className="lead">Buy or sell your meal coupons at NUS Food Exchange!</h2>
     </div>
     <div class="text-center">
       <Link to="/sellersignin" style={{ textDecoration: 'none' }}><button type="button" class="btn seller">Sell</button></Link>
