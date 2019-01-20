@@ -258,7 +258,7 @@ def matchBuyerToSeller(bot, update):
 
 def retry(bot, update):
 
-    if contact == "":
+    if location == "":
         update.message.reply_text('You have not filled in the required fields. Press /start or continue filling in the information required.')
         return
 
