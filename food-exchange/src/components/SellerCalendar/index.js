@@ -1,6 +1,7 @@
 import React from 'react';
 import './calendar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Redirect } from 'react-router-dom';
 
 var moment = require('moment');
 const firebase = require('firebase')
@@ -27,8 +28,16 @@ class Week extends React.Component {
       seller:null,
       count:WEEKS_INTERVAL,
       now:moment(),
-      weekStatus:[]
+      weekStatus:[],
+      toHome: false
     };
+  }
+
+  goHome = (event) => {
+    event.preventDefault();
+    this.setState({
+      toHome: true
+    });
   }
 
   componentDidMount = () => {
@@ -126,6 +135,10 @@ class Week extends React.Component {
   }
 
   render() {
+    if (this.state.toHome === true) {
+      return <Redirect to="/sellerhome" />
+    }
+
     return (
       <div>
         <div className="jumbotron">
@@ -133,7 +146,7 @@ class Week extends React.Component {
           <p className="lead">Where you plan and keep tracks your your meal plan</p>
           <hr></hr>
           <div class="text-center"> 
-            <button type="button" class="btn btn-danger">Back to Home</button>
+            <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
           </div>
         </div>
 

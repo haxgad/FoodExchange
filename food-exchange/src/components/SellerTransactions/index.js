@@ -3,13 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import "./transac.css";
+import { Redirect } from 'react-router-dom';
 
 const firebase = require('firebase')
 
 class SellerTransactions extends React.Component {
   state = {
     coupons: [],
-    keys: []
+    keys: [],
+    toHome: false
   }
 
   componentDidMount = () => {
@@ -48,6 +50,13 @@ alertCancel = (k) => {
   })
 }
 
+goHome = (event) => {
+  event.preventDefault();
+    this.setState({
+      toHome: true
+    });
+}
+
 alertConfirm = (k) => {
   confirmAlert({
     title: 'Confirm coupon sale',
@@ -76,6 +85,10 @@ handleUpdateStatus = (k) => {
 }
   
   render() {
+    if (this.state.toHome === true) {
+      return <Redirect to="/sellerhome" />
+    }
+
     return (
       <div>
         <div className="jumbotron">
@@ -83,7 +96,7 @@ handleUpdateStatus = (k) => {
           <p className="lead">Check/Update status of meal coupons being sold!</p>
           <hr></hr>
           <div class="text-center"> 
-            <button type="button" class="btn btn-danger">Back to Home</button>
+            <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
           </div>
         </div>
 
