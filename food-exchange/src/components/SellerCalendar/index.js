@@ -2,6 +2,8 @@ import React from 'react';
 import './calendar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 var moment = require('moment');
 const firebase = require('firebase')
@@ -108,6 +110,18 @@ class Week extends React.Component {
 
   UpdateDatabase = (newSeller) => {
     firebase.database().ref('/Seller/calvin').set(newSeller);
+    this.alertConfirm();
+  }
+
+  alertConfirm = () => {
+    confirmAlert({
+      title: 'Your calendar has been saved!',
+      buttons: [
+        {
+          label: 'Ok',
+        }
+      ]
+    })
   }
   
   ClickCheckbox = (week, day, type, value) => {
@@ -155,7 +169,7 @@ class Week extends React.Component {
       <div>
         <div className="jumbotron">
           <h1 className="display-4">Seller Calendar</h1>
-          <p className="lead">Where you plan and keep tracks your your meal plan</p>
+          <p className="lead">Where you plan and keep track of your meal plan!</p>
           <hr></hr>
           <div class="text-center"> 
             <button type="button" className="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
@@ -175,7 +189,7 @@ class Week extends React.Component {
           </button>
 
           <button type="button" class="btn btn-primary btn-md" onClick={()=> this.UpdateDatabase(this.state.seller)}>
-          Update Database 
+          Save Changes 
           </button>
         </div>
 
