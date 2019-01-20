@@ -81,6 +81,10 @@ handleUpdateStatus = (k) => {
         <div className="jumbotron">
           <h1 className="display-4">Status of Coupon Sale</h1>
           <p className="lead">Check/Update status of meal coupons being sold!</p>
+          <hr></hr>
+          <div class="text-center"> 
+            <button type="button" class="btn btn-danger">Back to Home</button>
+          </div>
         </div>
 
         <table className="table">

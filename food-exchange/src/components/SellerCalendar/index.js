@@ -53,6 +53,15 @@ class Week extends React.Component {
   render() {
     return (
       <div>
+        <div className="jumbotron">
+          <h1 className="display-4">Seller Calendar</h1>
+          <p className="lead">Where you plan and keep tracks your your meal plan</p>
+          <hr></hr>
+          <div class="text-center"> 
+            <button type="button" class="btn btn-danger">Back to Home</button>
+          </div>
+        </div>
+
         <div className="customHeaderDiv"> Current Week: {moment().week()} <br />
         {this.state.now.year()} Week : {this.state.now.week()} <br /> </div>
 

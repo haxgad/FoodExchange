@@ -6,11 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const SellerHome= () => (
   <div>
     <div className="jumbotron">
-      <h1 className="display-4">Seller's Home</h1>
-      <p className="lead">Manage your meal coupons here!</p>
+      <h1 className="display-4">Seller Home</h1>
+      <p className="lead">Choose services</p>
     </div>
     <Nav />
-    <Calendar />
   </div>
 );
 
