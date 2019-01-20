@@ -70,7 +70,7 @@ class BuyerHome extends React.Component {
           <p className="lead">See available coupons here!</p>
           <hr></hr>
           <div class="text-center"> 
-            <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back</b></button>
+            <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
           </div>
         </div>
 
@@ -97,7 +97,7 @@ class BuyerHome extends React.Component {
                     <td>{coupon[0].location}</td>
                     <td>{coupon[0].mealType}</td>
                     <td>{coupon[0].telegramHandle}</td>
-                    <td><button type="button" className="btn btn-primary btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button></td>
+                    <td><button type="button" className="btn confirmBtn btn-md" onClick= {()=>this.alertConfirm(this.state.keys[coupon[1]])}>Confirm</button></td>
                   </tr>
                 )
               }
