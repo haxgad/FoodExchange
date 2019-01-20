@@ -21,7 +21,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT = range(6)
+DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT, RETRY = range(7)
 
 #buyer information
 date = ""
@@ -30,6 +30,7 @@ location = ""
 amount = ""
 meal = ""
 contact = ""
+reply = ""
 
 #seller information
 sellerDate = ""
@@ -64,6 +65,8 @@ pullFromBackend()
 
 def start(bot, update):
     reply_keyboard = [['Breakfast', 'Dinner']]
+
+    print('START')
 
     update.message.reply_text(
         'Hi there! Welcome to FoodExchange, '
@@ -252,7 +255,24 @@ def matchBuyerToSeller(bot, update):
         else:
             print(meal, date, time)
 
-    update.message.reply_text('No sellers are available at the moment, please try again later')
+            reply_keyboard = [['Retry']]
+
+            update.message.reply_text('No sellers are available at the moment, press /retry to retry again')
+            return RETRY
+
+def retry(bot, update):
+
+    print("calling RETRY function now")
+
+    user = update.message.from_user
+
+    pullFromBackend()
+
+    reply = update.message.text
+
+    print(reply)
+    
+    matchBuyerToSeller(bot, update)
 
     """
     {'-LWaKLCQoFzjTRgnflJj': {'amount': 'amount', 'date': 'date', 
@@ -288,17 +308,19 @@ def main():
     #dp.add_handler(MessageHandler(Filters.text, create_tweet))
 
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CommandHandler('start', start), CommandHandler('retry', retry)],
 
         states={
 
-            MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal)],
+            MEAL: [RegexHandler('^(Breakfast|Dinner)$', meal), CommandHandler('retry', retry)],
 
-            DATE: [RegexHandler('^(Today|Tomorrow|Day After Tomorrow)$', date)],
+            DATE: [RegexHandler('^(Today|Tomorrow|Day After Tomorrow)$', date), CommandHandler('retry', retry)],
 
-            TIME: [RegexHandler('^(07:00 - 08:00|08:00 - 09:00|09:00 - 10:00|17:00 - 18:00|18:00 - 19:00|19:00 - 20:00)$', time)],
+            TIME: [RegexHandler('^(07:00 - 08:00|08:00 - 09:00|09:00 - 10:00|17:00 - 18:00|18:00 - 19:00|19:00 - 20:00)$', time), CommandHandler('retry', retry)],
 
-            LOCATION: [RegexHandler('^(Cinnamon / Tembusu Dining Hall|Capt / RC4 Dining Hall)$', location)],
+            LOCATION: [RegexHandler('^(Cinnamon / Tembusu Dining Hall|Capt / RC4 Dining Hall)$', location), CommandHandler('retry', retry)]
+
+            #RETRY: [RegexHandler('^(Retry)$', retry)]
 
             #AMOUNT: [MessageHandler(Filters.text, amount)],
 
