@@ -21,7 +21,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT, RETRY = range(7)
+DATE, TIME, LOCATION, AMOUNT, MEAL, CONTACT = range(6)
 
 #buyer information
 date = ""
@@ -235,30 +235,26 @@ def matchBuyerToSeller(bot, update):
     #     if meal == (result[meal])
     #         print("true")
 
+    print("PERSON IS PRINTING")
+    print(result)
     for (person, key) in zip(result.values(), result.keys()):
         print(person)
 
-        if person['soldStatus'] == 'false':
-            if person['mealType'] == meal:
-                    if person['date'] == date:
-                        if person['time'] == time:
-                            if person['location'] == location:
-                                print(person['telegramHandle'])
-                                update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
-                                pushToBackend(key)
-                                return
-                            else:
-                                print(location, person['location'])
-                                update.message.reply_text('We did not manage to find someone at ' + location + ' but there is someone at ' + person['location'] + '! Contact them at ' + (person['telegramHandle']))
-                                pushToBackend(key)
-                                return
-        else:
-            print(meal, date, time)
+        if person['soldStatus'] == 'false' and person['mealType'] == meal and person['date'] == date and person['time'] == time:
+            if person['location'] == location:
+                print(person['telegramHandle'])
+                update.message.reply_text('Hurray! We have found you a seller. Please contact ' + (person['telegramHandle']) + ' for your meal credit')
+                pushToBackend(key)
+                return
+            else:
+                print(location, person['location'])
+                update.message.reply_text('We did not manage to find someone at ' + location + ' but there is someone at ' + person['location'] + '! Contact them at ' + (person['telegramHandle']))
+                pushToBackend(key)
+                return
 
-            reply_keyboard = [['Retry']]
+    print(meal, date, time)
 
-            update.message.reply_text('No sellers are available at the moment, press /retry to retry again')
-            return RETRY
+    update.message.reply_text('No sellers are available at the moment, press /retry to retry again')
 
 def retry(bot, update):
 
