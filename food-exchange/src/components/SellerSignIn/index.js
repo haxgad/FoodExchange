@@ -82,7 +82,7 @@ class SellerSignIn extends React.Component {
                 <button type="submit" class="btn btn-secondary btn-lg btn-block"><b>Sign In</b></button>
               </form>
               <br></br>
-              <button type="button" class="btn btn-danger btn-lg btn-block" onClick={this.goHome}><b>Back to Home</b></button>
+              <button type="button" class="btn btn-danger btn-lg btn-block" onClick={this.goHome}><b>Cancel</b></button>
             </div>
             <div class="col-md-8 banner-sec">
               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

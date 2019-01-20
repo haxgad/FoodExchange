@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './sellingform.css';
+import { Redirect } from 'react-router-dom';
 
 const firebase = require('firebase');
 const moment = require('moment');
@@ -10,7 +11,15 @@ class SellingForm extends React.Component {
     location: "Cinnamon / Tembusu Dining Hall",
     time: "07:00 - 08:00",
     amount: "1",
-    mealType: "Breakfast"
+    mealType: "Breakfast",
+    toHome: false
+  }
+
+  goHome = (event) => {
+    event.preventDefault();
+    this.setState({
+      toHome: true
+    });
   }
 
   validDate = () => {
@@ -39,6 +48,8 @@ class SellingForm extends React.Component {
   }
 
   handleInputChange = (event) => {
+      event.preventDefault();
+      
       const target = event.target;
       const value = target.value;
       const id = target.id;
@@ -63,7 +74,7 @@ class SellingForm extends React.Component {
   renderTimeField = () => {
         if(this.state.mealType == "Breakfast") {
             return (
-                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
+                <select value="07:00 - 08:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
                     <option>07:00 - 08:00</option>
                     <option>08:00 - 09:00</option>
                     <option>09:00 - 10:00</option>
@@ -71,7 +82,7 @@ class SellingForm extends React.Component {
             );
         } else if(this.state.mealType == "Dinner") {
             return (
-                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>                                            <option>07:00 - 08:00</option>
+                <select value="17:00 - 18:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
                     <option>17:00 - 18:00</option>
                     <option>18:00 - 19:00</option>
                     <option>19:00 - 20:00</option>
@@ -81,11 +92,20 @@ class SellingForm extends React.Component {
     }
 
   render() {
+    
+    if (this.state.toHome === true) {
+        return <Redirect to="/sellerhome" />
+    }
+
     return (
       <div>
         <div class="jumbotron">
             <h1 class="display-4">Sell Coupons!</h1>
             <p class="lead">Fill in the following form to sell your coupons</p>
+            <hr></hr>
+            <div class="text-center"> 
+                <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
+            </div>
         </div>
 
         <div class="box">
