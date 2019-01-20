@@ -9,7 +9,7 @@ class SellerHome extends React.Component {
     toSell: false,
     toHome: false
   }
-  
+
   goCalendar = (event) => {
     event.preventDefault();
     this.setState({
@@ -61,14 +61,23 @@ class SellerHome extends React.Component {
           <h1 className="display-4">Seller Home</h1>
           <p className="lead">Choose services</p>
         </div>
-        <div class="row">
-          <div class="col-md-2 col-md-offset-5">
-            <button type="button" class="btn btn-primary btn-block" onClick={this.goCalendar}><b>Calendar</b></button>
-            <button type="button" class="btn btn-primary btn-block" onClick={this.goTransactions}><b>Transactions</b></button>
-            <button type="button" class="btn btn-primary btn-block" onClick={this.goSell}><b>Sell</b></button>
-            <button type="button" class="btn btn-primary btn-block" onClick={this.signOut}><b>Sign Out</b></button>
+
+        <div class="row center">
+          <div class="col-md-12 text-center">
+            <div class="btn-lg">
+              <button type="button" class="btn btn-primary btn-block" onClick={this.goCalendar}><b>Calendar</b></button>
+              <br></br>
+              <button type="button" class="btn btn-primary btn-block" onClick={this.goTransactions}><b>Transactions</b></button>
+              <br></br>
+              <button type="button" class="btn btn-primary btn-block" onClick={this.goSell}><b>Sell</b></button>
+              <br></br>
+              <hr></hr>
+              <br></br>
+              <button type="button" class="btn btn-danger btn-block" onClick={this.signOut}><b>Sign Out</b></button>
+            </div>
           </div>
         </div>
+
       </div>
     );
   }
