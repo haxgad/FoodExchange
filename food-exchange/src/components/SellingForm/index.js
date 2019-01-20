@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './sellingform.css';
+import { Redirect } from 'react-router-dom';
 
 const firebase = require('firebase');
 const moment = require('moment');
@@ -10,7 +11,15 @@ class SellingForm extends React.Component {
     location: "Cinnamon / Tembusu Dining Hall",
     time: "07:00 - 08:00",
     amount: "1",
-    mealType: "Breakfast"
+    mealType: "Breakfast",
+    toHome: false
+  }
+
+  goHome = (event) => {
+    event.preventDefault();
+    this.setState({
+      toHome: true
+    });
   }
 
   validDate = () => {
@@ -81,11 +90,20 @@ class SellingForm extends React.Component {
     }
 
   render() {
+    
+    if (this.state.toHome === true) {
+        return <Redirect to="/sellerhome" />
+    }
+
     return (
       <div>
         <div class="jumbotron">
             <h1 class="display-4">Sell Coupons!</h1>
             <p class="lead">Fill in the following form to sell your coupons</p>
+            <hr></hr>
+            <div class="text-center"> 
+                <button type="button" class="btn btn-danger" onClick={this.goHome}><b>Back to Home</b></button>
+            </div>
         </div>
 
         <div class="box">
