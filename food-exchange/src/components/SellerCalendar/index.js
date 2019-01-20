@@ -154,16 +154,18 @@ class Week extends React.Component {
         {this.state.now.year()} Week : {this.state.now.week()} <br /> </div>
 
         <div className="customHeaderDiv2"> <br />
-        <button type="button" class="float-left btn btn-default btn-sm" onClick={this.MinusWeek}>
-        <span class="glyphicon glyphicon-chevron-left"></span> &lt;---
-        </button>
-        <button type="button" class="float-left btn btn-default btn-sm" onClick={this.PlusWeek}>
-            <span class="glyphicon glyphicon-chevron-right"></span> ---&gt;
-        </button>
+        <div className="tableButtons">
+          <button type="button" class="float-left btn btn-info btn-sm" style={{marginRight:'5px'}} onClick={this.MinusWeek}>
+          <span class="glyphicon glyphicon-chevron-left"></span> &lt;--- Previous week
+          </button>
+          <button type="button" class="float-left btn btn-warning btn-sm" onClick={this.PlusWeek}>
+              <span class="glyphicon glyphicon-chevron-right"></span> Next week ---&gt;
+          </button>
 
-        <button type="button" onClick={()=> this.UpdateDatabase(this.state.seller)}>
-        Update Database 
-        </button>
+          <button type="button" class="btn btn-primary btn-md" onClick={()=> this.UpdateDatabase(this.state.seller)}>
+          Update Database 
+          </button>
+        </div>
 
         <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="1" name="Sunday" date={this.state.now.day("Sunday").format("D/M/Y")} isChecked={this.state.weekStatus[0]} />
         <Day clickCheckbox={this.ClickCheckbox} week={this.state.now.week()} day="2" name="Monday" date={this.state.now.day("Monday").format("D/M/Y")} isChecked={this.state.weekStatus[1]}/>
@@ -196,7 +198,7 @@ class Day extends React.Component {
 
     var value = (this.props.isChecked==="true")? true:false;
     return (
-      <div>
+      <div style={{marginBottom: '10px'}}>
         <table className="table">
         <thead className="thead-dark">
           <tr>
