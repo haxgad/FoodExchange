@@ -16,10 +16,10 @@ const Home = () => (
     </div>
     <div class="row logos">
       <div class="column down-a-bit">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png" class="center" width="200" height="200"></img>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png" class="center" width="200" height="200" alt="telegram"></img>
       </div>
       <div class="column">
-        <img src={logo} class="center" width="30%"></img>
+        <img src={logo} class="center" width="30%" alt="qr code"></img>
       </div>
     </div>
     <h2 class="float-text"><b>Our Telegram Bot</b></h2>

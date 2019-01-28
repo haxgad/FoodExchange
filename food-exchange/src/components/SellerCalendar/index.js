@@ -7,15 +7,15 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 var moment = require('moment');
 const firebase = require('firebase')
-//var now = moment();
+
+// TODO: this should be given by the authentication and is a key stored in the database
 const SELLER_NAME = "calvin"
-const WEEKS_INTERVAL = 2;
+// specifies the number of weeks before and after current week to show on calendar
+const WEEKS_BEFORE_AFTER = 2;
 
 const SellerCalendar= () => (
   <div>
     <Week />
-
-
   </div>
 );
 
@@ -28,7 +28,7 @@ class Week extends React.Component {
 
     this.state = {
       seller:null,
-      count:WEEKS_INTERVAL,
+      count:WEEKS_BEFORE_AFTER,
       now:moment(),
       weekStatus:[],
       toHome: false
@@ -47,12 +47,10 @@ class Week extends React.Component {
 
       var mySeller = null;
       snapshot.forEach((s) => {
-        console.log(s.key)
         if(s.key === SELLER_NAME) {
           mySeller = s.val();
         }
       })
-
 
       console.log(mySeller);
       this.setState({ seller: mySeller });
@@ -63,33 +61,31 @@ class Week extends React.Component {
   MinusWeek = () => {
     if(this.state.count > 0) {
       this.setState({ now: this.state.now.subtract(7, 'days') });
-      //week = now.week();
-      //year = now.year();
       this.setState({ count: this.state.count - 1 });
       console.log("minus");
       this.UpdateWeek();
     } else {
-      console.log("Cannot minus week: not more than two weeks before!");
+      console.log("Cannot minus week: not more than " + WEEKS_BEFORE_AFTER + " weeks before!");
     }  
   }
   
   PlusWeek = () => {
-    if(this.state.count < WEEKS_INTERVAL * 2) {
+    if(this.state.count < WEEKS_BEFORE_AFTER * 2) {
       this.setState({ now: this.state.now.add(7, 'days') });
-      //week = now.week();
-      //year = now.year();
       this.setState({ count: this.state.count + 1 });
       this.UpdateWeek();
     } else {
-      console.log("Cannot add week: not more than two weeks after!");
+      console.log("Cannot add week: not more than " + WEEKS_BEFORE_AFTER + " weeks after!");
     }  
   }
 
   UpdateWeek = () => {
     var thisWeek = this.state.now.week();
-    var newWeekStatus = []
+    // Update weekStatus state
+    var newWeekStatus = [];
     if(this.state.seller != null && "week" + thisWeek in this.state.seller["noteaten"]["weeks"]) {
       for(var i=1; i<=7; i++) {
+        // Size of typeArray is the number of days
         var typeArray = [];
         if ("day" + i in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]) {
           if("breakfast" in this.state.seller["noteaten"]["weeks"]["week" + thisWeek]["day" + i]) {
@@ -107,6 +103,7 @@ class Week extends React.Component {
       console.log(this.state.weekStatus);
   });
   }
+  
 
   UpdateDatabase = (newSeller) => {
     firebase.database().ref('/Seller/calvin').set(newSeller);

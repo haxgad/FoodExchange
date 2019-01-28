@@ -14,7 +14,8 @@ class SellerSignIn extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if(this.state.username == "CalvinTantio" && this.state.password == "FoodExchange") {
+    // TODO: change hardcoded values to proper authentication
+    if(this.state.username === "CalvinTantio" && this.state.password === "FoodExchange") {
       this.setState({
         proceed: true
       });
