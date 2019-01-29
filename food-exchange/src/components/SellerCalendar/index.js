@@ -209,20 +209,16 @@ class Week extends React.Component {
 }
 
 class Day extends React.Component {
-  constructor(props) {
-    super(props);
-    var isChecked;
-    if(this.props.isChecked == null) {
-      isChecked = []
-    } else {
-      isChecked = this.props.isChecked;
-    }
 
-    this.state = {
-      notEating: false,
-      isBfChecked: (isChecked.length > 0 && isChecked[0][0] === "breakfast")? true:false,
-      isDinChecked: ((isChecked.length > 0) && (isChecked.length > 1 || (isChecked[0][0] === "dinner")))? true:false,
-    };
+  IsMealChecked = (mealName, isChecked) => {
+    if (isChecked.length > 0) {
+      for(var i=0; i < isChecked.length; i++) {
+        if(isChecked[i][0] === mealName) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   render() {
@@ -234,8 +230,8 @@ class Day extends React.Component {
       isChecked = this.props.isChecked;
     }
 
-    var isBfChecked = (isChecked.length > 0 && isChecked[0][0] === "breakfast")? true:false;
-    var isDinChecked = ((isChecked.length > 0) && (isChecked.length > 1 || (isChecked[0][0] === "dinner")))? true:false;
+    var isBfChecked = this.IsMealChecked("breakfast", isChecked)
+    var isDinChecked = this.IsMealChecked("dinner", isChecked)
     return (
       <div style={{marginBottom: '10px'}}>
         <table className="table">
