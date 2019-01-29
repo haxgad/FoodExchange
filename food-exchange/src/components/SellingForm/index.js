@@ -58,12 +58,12 @@ class SellingForm extends React.Component {
           [id]: value
       });
 
-      if(id == "mealType") {
-        if(value == "Breakfast") {
+      if(id === "mealType") {
+        if(value === "Breakfast") {
             this.setState({
                 time: "07:00 - 08:00"
             })
-        } else if(value == "Dinner"){
+        } else if(value === "Dinner"){
             this.setState({
                 time: "17:00 - 18:00"
             })
@@ -72,18 +72,18 @@ class SellingForm extends React.Component {
   }
 
   renderTimeField = () => {
-        if(this.state.mealType == "Breakfast") {
+        if(this.state.mealType === "Breakfast") {
             return (
-                <select value="07:00 - 08:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
-                    <option>07:00 - 08:00</option>
+                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
+                    <option selected>07:00 - 08:00</option>
                     <option>08:00 - 09:00</option>
                     <option>09:00 - 10:00</option>
                 </select>
             );
-        } else if(this.state.mealType == "Dinner") {
+        } else if(this.state.mealType === "Dinner") {
             return (
-                <select value="17:00 - 18:00" class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
-                    <option>17:00 - 18:00</option>
+                <select class="form-control" id="time" onChange={this.handleInputChange} value={this.state.time}>
+                    <option selected>17:00 - 18:00</option>
                     <option>18:00 - 19:00</option>
                     <option>19:00 - 20:00</option>
                 </select>

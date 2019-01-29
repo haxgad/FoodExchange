@@ -101,6 +101,10 @@ class BuyerHome extends React.Component {
                   </tr>
                 )
               }
+
+              return (
+                null
+              )
             }) }
           </tbody>
         </table>
