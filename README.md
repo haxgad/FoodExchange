@@ -1,5 +1,7 @@
 # Food Exchange
 
+Say NO to food coupons wastage!
+
 ## Inspiration
 
 This project is inspired by the real-life pains of students staying on campus - we are forced to buy meal plans, and meals are included even on public holidays and weekends! Most people only end up consuming about 70% of their meal credits, and this leads to a huge amount of food wastage and money wasted. Making matters worse, each credit has an expiry date!
@@ -26,6 +28,17 @@ It was our first time using ReactJS and making a telegram bot, and we spent many
 
 ## Screenshots
 
+<p align="center">
+  <img width="600" src="https://github.com/CT15/FoodExchange/blob/master/screenshots/screenshot1.jpg">
+</p>
+
+<p align="center">
+  <img width="600" src="https://github.com/CT15/FoodExchange/blob/master/screenshots/screenshot2.jpg">
+</p>
+
+<p align="center">
+  <img width="600" src="https://github.com/CT15/FoodExchange/blob/master/screenshots/screenshot3.jpg">
+</p>
 
 ## Members
 
